@@ -61,6 +61,7 @@ header {
 .input-group {
     padding: 5px;
     position: relative;
+    margin:20px 0;
 }
 
 .input-group label {
@@ -68,8 +69,13 @@ header {
     font-weight:bold;
     font-size: 14px;
     text-align: left;
-    margin-bottom: 5px;
+    margin-bottom: 15px;
     margin-left: 3px;
+}
+
+.input-design:focus {
+    outline: none;
+
 }
 
 .input-group input {
@@ -77,9 +83,11 @@ header {
     height: 40px;
     padding: 8px;
     font-size: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border:none;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     box-sizing: border-box;
+    background-color: #f5f5f5;
 }
 
 .input-group textarea {
@@ -87,9 +95,11 @@ header {
     height: 400px;
     padding: 8px;
     font-size: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border:none;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
     box-sizing: border-box;
+    background-color: #f5f5f5;
 }
 
 .helper-text {
@@ -100,4 +110,50 @@ header {
     color:red;
     text-align: left;
     height: 13px;
+}
+
+.helper-text.visible {
+    visibility: visible; 
+}
+
+#write-btn {
+    width: 300px;
+    height: 35px;
+    padding: 5px;
+    margin-top: 20px;
+    background-color: #ACA0EB;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+#write-btn:enabled {
+    cursor:pointer;
+}
+
+#image {
+    display: none; 
+}
+
+.input-group .file-label {
+    display: inline-block;
+    margin: 0 15px 0 0;
+    padding: 5px 8px;
+    background-color: #d9d9d9;
+    color: #000;
+    border-radius: 5px;
+    border:1px solid #000;
+    cursor: pointer;
+    width:55px;
+    text-align: center;
+    font-weight: 400;
+    color: #000;
+}
+
+.file-group {
+    width: 100%;
+    display: flex;
+    align-items: center;
 }

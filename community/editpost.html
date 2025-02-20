@@ -17,6 +17,27 @@
     <div class="container">
         <div class="posts-wrapper">
             <p id="posts-title"><b>게시글 수정</b></p>
+            <div id="form">
+                <div class="input-group">
+                    <label for="title">제목*</label>
+                    <input type="email" class="input-design" id="title" placeholder="제목을 입력해주세요. (최대 26글자)">
+                </div>
+                
+                <div class="input-group">
+                    <label for="content">내용*</label>
+                    <textarea type="text" class="input-design" id="content" placeholder="내용을 입력해 주세요."></textarea>
+                    <p id="content-helper" class="helper-text"></p> 
+                </div>
+                <div class="input-group">
+                    <label for="image">이미지*</label>
+                    <div class="file-group">
+                        <label for="image" class="file-label">파일 선택</label>
+                        <span id="file-name">파일을 선택하세요.</span>
+                    </div>
+                    <input type="file" id="image">
+                </div>
+                <button type="submit" id="write-btn">수정하기</button>
+            </div>
         </div>
     </div>
 

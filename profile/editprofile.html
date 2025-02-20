@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/static/woff2/SUIT.css" rel="stylesheet">
-    <title>로그인</title>
+    <title>회원정보 수정</title>
     <link rel="stylesheet" href="editprofile.css">
 </head>
 <body>
@@ -14,20 +14,39 @@
     </header>
     
     <div class="container">
-        <div class="login-wrapper">
-            <h2 id="login-title">회원정보 수정</h2>
+        <div class="edit-wrapper">
+            <h2 id="edit-title">회원정보 수정</h2>
+            <div class="profile-upload">
+                <label for="profile-pic" class="profile-label">프로필 사진*</label>
+                <p class="helper-text" id="profile-helper"></p>
+                <label for="profile-pic" class="profile-circle" id="profile-circle">
+                    <img src="default-profile.png" alt="" id="profile-preview">
+                    <span id="edit-icon">변경</span>
+                </label>
+                <input type="file" id="profile-pic" accept="image/*" hidden>
+            </div>
             <div class="input-group">
                 <label for="email">이메일</label>
                 <input type="email" id="email" placeholder="이메일을 입력하세요">
                 <p id="email-helper" class="helper-text"></p> 
             </div>
             <div class="input-group">
-                <label for="password">비밀번호</label>
-                <input type="password" id="password" placeholder="비밀번호를 입력하세요">
-                <p id="password-helper" class="helper-text"></p> 
+                <label for="nickname">닉네임</label>
+                <input type="text" id="nickname" placeholder="닉네임을 입력하세요">
+                <p id="nickname-helper" class="helper-text"></p> 
             </div>
-            <button id="login-button" disabled>로그인</button>
-            <a href="signup.html" id="signup-button" class="signup-link">회원가입</a>
+            <div id="delete-modal" class="modal">
+                <div class="modal-content">
+                    <p class="modal-title">회원탈퇴 하시겠습습니까?</p>
+                    <p>작성된 게시글과 댓글은 삭제됩니다.</p>
+                    <div class="modal-buttons">
+                        <button class="modal-btn" id="cancel-btn">취소</button>
+                        <button class="modal-btn" id="confirm-btn">확인</button>
+                    </div>
+                </div>
+            </div>
+            <button id="edit-button" disabled>수정하기</button>
+            <div id="login-button" class="login-link">회원탈퇴</div>
         </div>
     </div>
 

@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 회원가입 버튼 클릭 시
-    document.getElementById("signupForm").addEventListener("submit", function (event) {
+    signupBtn.addEventListener("click", function (event) {
         event.preventDefault(); 
         if (!signupBtn.disabled) {
             window.location.href = "login.html"; 

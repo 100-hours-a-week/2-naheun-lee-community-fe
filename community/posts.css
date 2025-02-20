@@ -34,6 +34,7 @@ header {
     width: 500px; 
     padding: 10px;
     text-align: center;
+    height: 100%;
 }
 
 #profile-img {
@@ -50,33 +51,41 @@ header {
 }
 
 .profile-dropdown {
-    display: none;
-    position: absolute;
-    right: calc((100vw - 450px) / 2);
-    top: 50px;
-    background: white;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    width: 150px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.1s ease, visibility 0.1s ease;
+    position: fixed;
+    right: calc((100vw - 500px) / 2);
+    top: 60px;
+    width: 120px;
+    height: 120px;
+    z-index: 9999;
 }
 
-.profile-dropdown .edit-button {
-    padding: 10px;
+.profile-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.edit-button {
+    padding:5px;
+    height: 30px;
     text-align: center;
-    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    background: #d9d9d9;
+}
+.edit-button:hover {
+    background: #E9E9E9;
 }
 
-.profile-dropdown .edit-button:last-child {
-    border-bottom: none;
-}
-
-.profile-dropdown .edit-button a {
+.edit-button a {
     text-decoration: none;
     color: black;
     font-size: 14px;
-    display: block;
+}
+
+.edit-button a:hover {
+    color: black; 
 }
 
 .write-btn-section{
@@ -108,8 +117,9 @@ header {
     flex-direction: column;
     align-items: center;
     padding-bottom: 50px;
-    max-height: calc(100vh - 120px);
     overflow-y: auto;
+    box-sizing: border-box;
+    max-height: calc(100vh - 200px);
 }
 #post-list::-webkit-scrollbar {
     width: 0px;

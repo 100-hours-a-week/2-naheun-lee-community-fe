@@ -72,6 +72,9 @@ header {
     margin: 20px 0 40px 0;
 }
 
+#post-meta{
+    margin-bottom: 20px;
+}
 .profile-group {
     position:absolute;
     left: 0;
@@ -103,8 +106,10 @@ header {
 .edit-btn, .delete-btn {
     background: none;
     border: 1px solid #ACA0EB;
+    width: 55px;
+    height: 30px;
     border-radius: 10px;
-    padding: 5px 15px;
+    padding: 2px;
     margin-left: 10px;
     cursor: pointer;
     font-size: 14px;
@@ -151,19 +156,23 @@ header {
     margin:5px 0;
 }
 
-#cancel-btn {
+#cancel-btn, #cancel-btn2 {
     background-color: black;
     color: white;
 }
 
-#confirm-btn {
+#confirm-btn, #confirm-btn2 {
     background-color: #ACA0EB;
     color: black;
 }
 
+#like-btn {
+    cursor: pointer;
+}
+
 hr {
     margin: 20px 0;
-    color:#f5f5f5;
+    color:#ccc;
 }
 
 .post-content img {
@@ -202,64 +211,68 @@ hr {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 500px;
+    background-color: white;
+    border-radius: 10px ;
 }
 
 #comment-text {
-    width: 500px;
-    height: 50px;
-    margin-bottom: 10px;
+    width: 95%;
+    height: 100px;
     padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    border-radius: 10px 10px 0 0 ;
     font-size: 16px;
+    border:none;
+}
+
+#comment-text:focus{
+    outline: none;
+}
+
+.btn-box {
+    width:500px;
+    height: 45px;
+    border-top:2px solid #e0e0e0;
+    position:relative;
+    justify-content: center;
 }
 
 #comment-btn {
-    width: 80%;
-    padding: 10px;
-    background-color: #ACA0EB;
-    color: white;
+    position:absolute;
+    top:5px;
+    right: 5px;
+    width: 120px;
+    height: 35px;
+    padding: 5px;
     border: none;
-    border-radius: 5px;
+    color: white;
+    border-radius: 20px;
+    box-sizing: border-box;
+    font-size: 14px;
     cursor: pointer;
 }
 
 #comment-btn:disabled {
-    background-color: #D9D9D9;
+    background-color: #ACA0EB;
+}
+
+#comment-btn:enabled {
+    background-color: #7F6AEE;
 }
 
 #comments-list {
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 .comment-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 40px;
 }
 
-.comment-item .profile-img img {
-    width: 30px;
-    height: 30px;
-}
 
-.comment-item .comment-text {
-    flex-grow: 1;
+.comment-item .comment-content {
     padding: 10px;
     background-color: #f5f5f5;
     border-radius: 10px;
     margin-left: 10px;
-}
-
-.comment-item .edit-btn, .comment-item .delete-btn {
-    background: none;
-    border: 1px solid #ACA0EB;
-    padding: 5px 10px;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.comment-item .delete-btn {
-    border-color: red;
-    color: red;
+    text-align: left;
 }
