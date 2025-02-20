@@ -6,6 +6,10 @@ body {
     text-align: center;
 }
 
+input, textarea {
+    font-family: 'SUIT', sans-serif;
+}
+
 header {
     position: fixed;
     top: 0;
@@ -41,7 +45,7 @@ header {
     border-radius: 50%;
     cursor: pointer;
     position: absolute;
-    right: calc((100vw - 450px) / 2);  
+    right: calc((100vw - 440px) / 2);  
 }
 
 #posts-title {
@@ -67,7 +71,7 @@ header {
 .input-group label {
     display: block;
     font-weight:bold;
-    font-size: 14px;
+    font-size: 15px;
     text-align: left;
     margin-bottom: 15px;
     margin-left: 3px;
@@ -75,7 +79,6 @@ header {
 
 .input-design:focus {
     outline: none;
-
 }
 
 .input-group input {
@@ -146,7 +149,7 @@ header {
     border-radius: 5px;
     border:1px solid #000;
     cursor: pointer;
-    width:55px;
+    width:60px;
     text-align: center;
     font-weight: 400;
     color: #000;

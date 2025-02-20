@@ -5,6 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const fileNameDisplay = document.getElementById("file-name");
     const writeBtn = document.getElementById("write-btn");
     const contentHelper = document.getElementById("content-helper");
+    const dropdown = new DropdownMenu();
+    
+    dropdown.render("dropdown");
 
     titleInput.addEventListener("input", function () {
         if (this.value.length > 26) {

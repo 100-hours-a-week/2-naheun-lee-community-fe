@@ -8,11 +8,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const cancelButton2 = document.getElementById("cancel-btn2");
     const commentList = document.getElementById("comments-list");
     const commentTexts = document.getElementById("comment-text");
+    const dropdown = new DropdownMenu();
+    
+    dropdown.render("dropdown");
 
     let postData = {
         title: "첫 번째 게시글",
         content: "어느 날, 한 소년은 작은 마을에서 살고 있었습니다. 그 마을은 아주 평화롭고 아름다운 곳이었지만, 소년은 항상 새로운 것에 대한 호기심이 넘쳤습니다. 그는 늘 마을 외곽의 숲을 탐험하며, 그곳에서 특별한 것을 발견하고 싶어 했습니다. 어느 날, 소년은 숲속 깊은 곳에서 반짝이는 빛을 발견하고, 그 빛을 따라가기로 결심했습니다.",
-        image: "image.jpg",
+        image: "../assets/image/커피.jpg",
         likes: 120,
         views: 10500,
         commentlist: [],
@@ -61,7 +64,6 @@ document.addEventListener("DOMContentLoaded", function () {
         addComment();
     });
 
-    // 댓글 추가
     function addComment() {
         const commentText = commentTexts.value;
         const commentItem = document.createElement('div');
@@ -70,7 +72,7 @@ document.addEventListener("DOMContentLoaded", function () {
         commentItem.innerHTML = `
         <div class="post-meta" id="post-meta">
             <div class="profile-group">
-                <span class="post-img"><img src="default-profile.png" alt="프로필"></span>
+                <span class="post-img"><img src="../assets/image/커피.jpg" alt="프로필"></span>
                 <span class="nickname">사용자2</span> 
                 <span class="date">2024-02-19 12:30:00</span>
             </div>
@@ -111,7 +113,6 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     }
 
-    // 모달 열기/닫기
     function openDeleteModal2(commentItem) {
         if (deleteModal2) {
             deleteModal2.style.display = "flex";
@@ -123,7 +124,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (deleteModal2) deleteModal2.style.display = "none";
     }
 
-    // 댓글 삭제 확인
     confirmButton2.addEventListener('click', function () {
         alert("댓글이 삭제되었습니다.");
         const commentItem = deleteModal2.commentItem; 
@@ -138,7 +138,6 @@ document.addEventListener("DOMContentLoaded", function () {
         closeDeleteModal2();
     });
 
-    // 댓글 삭제 버튼 클릭 시 모달 열기
     commentList.addEventListener('click', function (event) {
         if (event.target && event.target.id === 'deletecomment') {
             const commentItem = event.target.closest('.comment-item');

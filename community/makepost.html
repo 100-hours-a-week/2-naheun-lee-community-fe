@@ -4,16 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/gh/sun-typeface/SUIT@2/fonts/static/woff2/SUIT.css" rel="stylesheet">
-    <title>아무 말 대잔치</title>
+    <title>게시글 작성</title>
     <link rel="stylesheet" href="makepost.css">
 </head>
 <body>
     <header>
-        <button class="back-btn" onclick="history.back();">&lt;</button>
+        <button class="back-btn" onclick="location.href=`posts.html`">&lt;</button>
         아무 말 대잔치
-        <img id="profile-img" src="default-profile.png" alt="프로필 이미지">
+        <img id="profile-img" src="../assets/image/커피.jpg" alt="프로필 이미지">
     </header>
-
+    <div id="dropdown"></div>
+    
     <div class="container">
         <div class="posts-wrapper">
             <p id="posts-title"><b>게시글 작성</b></p>
@@ -40,7 +41,7 @@
             </div>
         </div>
     </div>
-
+    <script src="../assets/component/DropdownMenu.js"></script>
     <script src="makepost.js"></script>
 </body>
 </html>

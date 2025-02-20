@@ -5,6 +5,10 @@ body {
     background-color: #f5f5f5;
 }
 
+input, textarea {
+    font-family: 'SUIT', sans-serif;
+}
+
 header {
     position: fixed;
     top: 0;
@@ -48,7 +52,7 @@ header {
 .input-group label {
     display: block;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 15px;
     text-align: left;
     margin-bottom: 5px;
     margin-left: 3px;
@@ -91,8 +95,8 @@ header {
     font-size: 14px;
 }
 
-.login-button:disabled {
-    background-color: #ccc;
+#login-button:enabled {
+    cursor: pointer;
 }
 
 .signup-link {

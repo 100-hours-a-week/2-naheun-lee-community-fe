@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const loginButton = document.getElementById("login-button");
     const cancelButton = document.getElementById("cancel-btn");
     const confirmButton = document.getElementById("confirm-btn");
+    const dropdown = new DropdownMenu();
+    
+    dropdown.render("dropdown");
 
     function showError(id, message) {
         const element = document.getElementById(id);

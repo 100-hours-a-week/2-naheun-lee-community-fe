@@ -100,6 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const confirmPasswordValid = confirmPasswordInput.value === passwordInput.value;
         const nicknameValid = nicknameInput.value.trim() && document.getElementById("nickname-helper").style.visibility === "hidden";
         const profileValid = profilePreview.src !== "default-profile.png";
+        console.log(profilePreview.src);
 
         if (emailValid && passwordValid && confirmPasswordValid && nicknameValid && profileValid) {
             signupBtn.disabled = false;

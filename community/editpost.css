@@ -6,6 +6,10 @@ body {
     text-align: center;
 }
 
+input, textarea {
+    font-family: 'SUIT', sans-serif;
+}
+
 header {
     position: fixed;
     top: 0;
@@ -41,7 +45,7 @@ header {
     border-radius: 50%;
     cursor: pointer;
     position: absolute;
-    right: calc((100vw - 450px) / 2);  
+    right: calc((100vw - 440px) / 2);  
 }
 
 #posts-title {

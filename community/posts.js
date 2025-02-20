@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
     const postList = document.getElementById("post-list");
     const writeBtn = document.getElementById("write-btn");
-    const profileImg = document.getElementById("profile-img");
-    const profileMenu = document.getElementById("profile-menu");
     const sentinel = document.getElementById("sentinel");
+    const dropdown = new DropdownMenu();
+    
+    dropdown.render("dropdown");
  
     const observerOptions = {
         root: postList,
@@ -12,13 +13,13 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     let posts = [
-        { title: "첫 번째 게시글", likes: 1200, comments: 15, views: 10500, date: "2024-02-19 12:30:00", profile: "default-profile.png", nickname: "사용자1" },
-        { title: "두 번째 게시글", likes: 999, comments: 2, views: 500, date: "2024-02-18 14:10:00", profile: "default-profile.png", nickname: "사용자2" },
-        { title: "세 번째 게시글", likes: 20500, comments: 100, views: 200000, date: "2024-02-17 09:45:00", profile: "default-profile.png", nickname: "사용자3" },
-        { title: "네 번째 게시글", likes: 20500, comments: 100, views: 200000, date: "2024-02-17 09:45:00", profile: "default-profile.png", nickname: "사용자3" },
-        { title: "다섯 번째 게시글", likes: 20500, comments: 100, views: 200000, date: "2024-02-17 09:45:00", profile: "default-profile.png", nickname: "사용자3" },
-        { title: "여섯 번째 게시글", likes: 20500, comments: 100, views: 200000, date: "2024-02-17 09:45:00", profile: "default-profile.png", nickname: "사용자3" },
-        { title: "일곱 번째 게시글", likes: 20500, comments: 100, views: 200000, date: "2024-02-17 09:45:00", profile: "default-profile.png", nickname: "사용자3" }
+        { title: "첫 번째 게시글", likes: 1200, comments: 15, views: 10500, date: "2024-02-19 12:30:00", profile: "../assets/image/커피.jpg", nickname: "사용자1" },
+        { title: "두 번째 게시글", likes: 999, comments: 2, views: 500, date: "2024-02-18 14:10:00", profile: "../assets/image/커피.jpg", nickname: "사용자2" },
+        { title: "세 번째 게시글", likes: 20500, comments: 100, views: 200000, date: "2024-02-17 09:45:00", profile: "../assets/image/커피.jpg", nickname: "사용자3" },
+        { title: "네 번째 게시글", likes: 20500, comments: 100, views: 200000, date: "2024-02-17 09:45:00", profile: "../assets/image/커피.jpg", nickname: "사용자3" },
+        { title: "다섯 번째 게시글", likes: 20500, comments: 100, views: 200000, date: "2024-02-17 09:45:00", profile: "../assets/image/커피.jpg", nickname: "사용자3" },
+        { title: "여섯 번째 게시글", likes: 20500, comments: 100, views: 200000, date: "2024-02-17 09:45:00", profile: "../assets/image/커피.jpg", nickname: "사용자3" },
+        { title: "일곱 번째 게시글", likes: 20500, comments: 100, views: 200000, date: "2024-02-17 09:45:00", profile: "../assets/image/커피.jpg", nickname: "사용자3" }
     ];
 
     let visiblePosts = 0;
@@ -75,17 +76,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     writeBtn.addEventListener("click", function () {
         window.location.href = "makepost.html";
-    });
-
-    profileImg.addEventListener("click", () => {
-        profileMenu.classList.toggle("active");
-    });
-
-     // 드롭다운 바깥 클릭 시 닫기
-     window.addEventListener("click", (e) => {
-        if (!profileImg.contains(e.target) && !profileMenu.contains(e.target)) {
-            profileMenu.classList.remove("active");
-        }
     });
 
 

@@ -2,6 +2,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const passwordInput = document.getElementById("password");
     const confirmPasswordInput = document.getElementById("confirm-password");
     const editButton = document.getElementById("edit-button");
+    const dropdown = new DropdownMenu();
+    
+    dropdown.render("dropdown");
 
     function showError(id, message) {
         const element = document.getElementById(id);
