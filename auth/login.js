@@ -2,8 +2,16 @@ document.addEventListener("DOMContentLoaded", function () {
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
     const loginButton = document.getElementById("login-button");
-    const emailHelperText = document.getElementById("email-helper");
-    const passwordHelperText = document.getElementById("password-helper");
+
+    function showError(id, message) {
+        const element = document.getElementById(id);
+        element.textContent = message;
+        element.style.visibility = "visible";
+    }
+
+    function hideError(id) {
+        document.getElementById(id).style.visibility = "hidden";
+    }
 
     function validateEmail(email) {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -28,25 +36,20 @@ document.addEventListener("DOMContentLoaded", function () {
     emailInput.addEventListener("input", function () {
         updateButtonState();
         if (!validateEmail(emailInput.value)) {
-            emailHelperText.textContent = "올바른 이메일 주소 형식을 입력해주세요.";
-            emailHelperText.classList.add("visible");
+            showError("email-helper", "올바른 이메일 주소 형식을 입력해주세요.");
         } else {
-            emailHelperText.textContent = "";
-            emailHelperText.classList.remove("visible");
+            hideError("email-helper");
         }
     });
 
     passwordInput.addEventListener("input", function () {
         updateButtonState();
         if (!passwordInput.value) {
-            passwordHelperText.textContent = "비밀번호를 입력해주세요.";
-            passwordHelperText.classList.add("visible");
+            showError("password-helper", "비밀번호를 입력해주세요.");
         } else if (!validatePassword(passwordInput.value)) {
-            passwordHelperText.textContent = "비밀번호는 8~20자이며, 대문자/소문자/숫자/특수문자를 각각 최소 1개 포함해야 합니다.";
-            passwordHelperText.classList.add("visible");
+            showError("password-helper", "비밀번호는 8~20자이며, 대문자/소문자/숫자/특수문자를 각각 최소 1개 포함해야 합니다.");
         } else {
-            passwordHelperText.textContent = "";
-            passwordHelperText.classList.remove("visible");
+            hideError("password-helper");
         }
     });
 
