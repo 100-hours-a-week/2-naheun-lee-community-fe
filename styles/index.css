@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'SUIT';
+    src: url('../assets/fonts/SUIT-Regular.woff2') format('woff2');
+    font-style: normal;
+}
+
+* {
+    font-family: 'SUIT', sans-serif;
+}
