@@ -1,3 +1,5 @@
+import { loginUser } from "../api/userService.js";
+
 document.addEventListener("DOMContentLoaded", function () {
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
@@ -53,15 +55,25 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    loginButton.addEventListener("click", function (event) {
+    loginButton.addEventListener("click", async function (event) {
         event.preventDefault();
         if (!validateEmail(emailInput.value) || !validatePassword(passwordInput.value)) {
             alert("아이디 또는 비밀번호를 확인해주세요.");
             return;
         }
-        else{
+
+        const email = emailInput.value;
+        const password = passwordInput.value;
+        
+        // loginUser API 호출
+        const result = await loginUser(email, password);
+        if (result.success) {
             window.location.href = "../community/posts.html";
+        } else {
+            alert(result.message);
         }
+
+
     });
 });
 

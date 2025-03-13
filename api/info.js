@@ -1,4 +1,4 @@
-// 현재 로그인된 사용자 정보 가져오기
+// 현재 로그인된 사용자 정보 가져오기: Authorization token 역할
 export function getCurrentUser() {
     const user = localStorage.getItem("user");
     return user ? JSON.parse(user) : null;
@@ -18,7 +18,7 @@ export async function getUsers() {
     }
 }
 
-// 특정 사용자 정보 가져오기
+// 특정 사용자 정보 가져오기: (GET) /user/profile
 export async function getUserById(userID) {
     try {
         const users = await getUsers(); 
@@ -34,7 +34,7 @@ export async function getUserById(userID) {
     }
 }
 
-// 게시글 목록 가져오기
+// 게시글 목록 가져오기: (GET) /posts
 export async function getPosts() {
     try {
         const response = await fetch('/data/posts.json');
@@ -48,11 +48,10 @@ export async function getPosts() {
     }
 }
 
-// 특정 게시글 정보 가져오기 
-export async function getPostById() {
+// 특정 게시글 정보 가져오기: (GET) /post/{postid}
+export async function getPostById(postId) {
     try {
         const posts = await getPosts(); 
-        const postId = localStorage.getItem("postid");
         const post = posts.find(post => post.id === postId);  
         if (post) {
             return post;
@@ -65,10 +64,10 @@ export async function getPostById() {
     }
 }
 
-//특정 댓글 정보 가져오기
-export async function getCommentById(commentID) {
+//특정 댓글 정보 가져오기: '/comments/{commentid}' 포함된 url에 사용
+export async function getCommentById(postId, commentID) {
     try {
-        const post = await getPostById(); 
+        const post = await getPostById(postId); 
         const comment = post.comments.find(comment => comment.id === commentID);  
         if (comment) {
             return comment;

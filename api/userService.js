@@ -1,6 +1,6 @@
-import { getUsers, getCurrentUser } from "./info";
+import { getUsers, getCurrentUser } from "./info.js";
 
-// 로그인
+// 로그인: (POST) /user/login
 export async function loginUser(email, password) {
     try {
         const users = await getUsers();
@@ -16,14 +16,14 @@ export async function loginUser(email, password) {
 
             return { success: true, data: user };
         } else {
-            return { success: false, message: "아이디 또는 비밀번호를 확인해주세요." };
+            return { success: false, message: "가입된 회원이 아닙니다." };
         }
     } catch (error) {
         return { success: false, message: "로그인 중 오류가 발생했습니다." };
     }
 }
 
-// 회원가입 
+// 회원가입: (POST) /user/signup
 export async function signupUser(email, password, nickname, profileImg) {
     try{
         const users = await getUsers();
@@ -54,7 +54,7 @@ export async function signupUser(email, password, nickname, profileImg) {
     }
 }
 
-// 프로필 수정
+// 프로필 수정: (PATCH) /user/profile
 export async function updateProfile(email, nickname, profileImg) {
     try {
         const users = await getUsers();
@@ -84,10 +84,9 @@ export async function updateProfile(email, nickname, profileImg) {
     }
 }
 
-// 비밀번호 수정
+// 비밀번호 수정: (PATCH) /user/password
 export async function updatePassword(newPassword) {
     try {
-        const users = await getUsers();
         
         const currentUser = getCurrentUser(); 
         if (!currentUser) {
@@ -102,8 +101,13 @@ export async function updatePassword(newPassword) {
     }
 }
 
-// 로그아웃 
+// 로그아웃: (POST) /user/logout
 export function logoutUser() {
+    localStorage.removeItem("user");
+}
+
+//회원탈퇴: (DELETE) /user
+export function deleteUser() {
     localStorage.removeItem("user");
 }
 

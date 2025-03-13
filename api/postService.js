@@ -1,6 +1,6 @@
-import { getUsers, getCurrentUser, getPosts, getPostById, getCommentById } from "./info";
+import { getCurrentUser, getPosts, getPostById, getCommentById } from "./info.js";
 
-// 게시글 등록
+// 게시글 등록: (POST) /post
 export async function createPost(title, content, postImg) {
     try {
         const user = getCurrentUser(); 
@@ -8,6 +8,7 @@ export async function createPost(title, content, postImg) {
             return { success: false, message: "로그인이 필요합니다." };
         }
 
+        const posts = await getPosts(); 
         const newPost = {
             id: posts.length + 1, 
             author: user.id, 
@@ -26,15 +27,15 @@ export async function createPost(title, content, postImg) {
     }
 }
 
-// 게시글 수정
-export async function updatePost(newTitle, newContent, newPostImg) {
+// 게시글 수정: (PATCH) /post/{postid}
+export async function updatePost(postId, newTitle, newContent, newPostImg) {
     try {
         const user = getCurrentUser();
         if (!user) {
             return { success: false, message: "로그인이 필요합니다." };
         }
 
-        const post = await getPostById();
+        let  post = await getPostById(postId);
         if (post.author !== user.id) {
             return { success: false, message: "게시글 수정 권한이 없습니다." };
         }
@@ -53,15 +54,15 @@ export async function updatePost(newTitle, newContent, newPostImg) {
     }
 }
 
-// 게시글 삭제
-export async function deletePost() {
+// 게시글 삭제: (DELETE) /post/{postid}
+export async function deletePost(postId) {
     try {
         const user = getCurrentUser();
         if (!user) {
             return { success: false, message: "로그인이 필요합니다." };
         }
 
-        const post = await getPostById();
+        const post = await getPostById(postId);
         if (post.author !== user.id) {
             return { success: false, message: "게시글 삭제 권한이 없습니다." };
         }
@@ -72,37 +73,45 @@ export async function deletePost() {
     }
 }
 
-// 게시글 좋아요 업데이트
-export async function updateLikes(postId, likeIncrement) {
-    try {
-        // 서버와의 통신을 가정
-        const response = await fetch(`/api/posts/${postId}/like`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ likeIncrement }) // +1 또는 -1
-        });
-
-        if (!response.ok) {
-            throw new Error("좋아요 업데이트 실패");
-        }
-
-        const data = await response.json();
-        return data; 
-    } catch (error) {
-        console.error("좋아요 업데이트 오류:", error);
-        return { success: false, message: "좋아요 업데이트 중 오류가 발생했습니다." };
-    }
-}
-
-// 댓글 등록
-export async function addComment(commentText) {
+// 게시글 좋아요 추가: (POST) /post/{postid}likes
+export async function addLike() {
     try {
         const user = getCurrentUser();
         if (!user) {
             return { success: false, message: "로그인이 필요합니다." };
         }
 
-        const post = await getPostById();
+        //백엔드와 데이터베이스에서 추가 로직 필요!! 일단 프론트엔드에서 +1로 처리
+        return { success: true, message: "좋아요가 추가되었습니다." };
+    } catch (error) {
+        return { success: false, message: "좋아요 업데이트 중 오류가 발생했습니다." };
+    }
+}
+
+// 게시글 좋아요 취소: (DELETE) /post/{postid}likes
+export async function removeLike() {
+    try {
+        const user = getCurrentUser();
+        if (!user) {
+            return { success: false, message: "로그인이 필요합니다." };
+        }
+
+        //백엔드와 데이터베이스에서 추가 로직 필요!! 일단 프론트엔드에서 -1로 처리
+        return { success: true, message: "좋아요가 취소되었습니다." };
+    } catch (error) {
+        return { success: false, message: "좋아요 업데이트 중 오류가 발생했습니다." };
+    }
+}
+
+// 댓글 등록: (POST) /post/{postid}/comments
+export async function addAPIComment(postId, commentText) {
+    try {
+        const user = getCurrentUser();
+        if (!user) {
+            return { success: false, message: "로그인이 필요합니다." };
+        }
+
+        const post = await getPostById(postId);
         const newComment = {
             id:  post.comments.length + 1, 
             content: commentText,
@@ -116,15 +125,15 @@ export async function addComment(commentText) {
     }
 }
 
-// 댓글 수정
-export async function editComment(commentId, newCommentText) {
+// 댓글 수정: (PATCH) /post/{postid}/comments/{commentid}
+export async function editAPIComment(postId, commentId, newCommentText) {
     try {
         const user = getCurrentUser();
         if (!user) {
             return { success: false, message: "로그인이 필요합니다." };
         }
 
-        const comment = await getCommentById(commentId);
+        let comment = await getCommentById(postId, commentId);
         if (comment.userId !== user.id) {
             return { success: false, message: "댓글 수정 권한이 없습니다." };
         }
@@ -132,7 +141,7 @@ export async function editComment(commentId, newCommentText) {
         comment = {
             ...comment,
             content: newCommentText,
-            date: new Date().toISOString() 
+            created_at: new Date().toISOString() 
         };
 
         return { success: true, data: comment }; 
@@ -141,15 +150,15 @@ export async function editComment(commentId, newCommentText) {
     }
 }
 
-// 댓글 삭제
-export async function deleteComment(commentId) {
+// 댓글 삭제: (DELETE) /post/{postid}/comments/{commentid}
+export async function deleteAPIComment(postId, commentId) {
     try {
         const user = getCurrentUser();
         if (!user) {
             return { success: false, message: "로그인이 필요합니다." };
         }
 
-        const comment = await getCommentById(commentId);
+        const comment = await getCommentById(postId, commentId);
         if (comment.userId !== user.id) {
             return { success: false, message: "댓글 삭제 권한이 없습니다." };
         }

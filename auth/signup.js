@@ -1,7 +1,8 @@
+import { signupUser } from "../api/userService.js";
+
 document.addEventListener("DOMContentLoaded", function () {
     const profilePicInput = document.getElementById("profile-pic");
     const profilePreview = document.getElementById("profile-preview");
-    const profileHelper = document.getElementById("profile-helper");
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
     const confirmPasswordInput = document.getElementById("confirm-password");
@@ -28,14 +29,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 profilePreview.src = e.target.result;
                 profilePreview.style.display = "block"; 
                 plusIcon.style.display = "none";
-                hideError(profileHelper);
+                hideError("profile-helper");
             };
             reader.readAsDataURL(file);
         }
         else{
             profilePreview.style.display = "none";
             plusIcon.style.display = "block";
-            showError(profileHelper,"프로필 사진을 추가해주세요.");
+            showError("profile-helper", "프로필 사진을 추가해주세요.");
         }
     });
 
@@ -49,7 +50,6 @@ document.addEventListener("DOMContentLoaded", function () {
             showError("email-helper", "올바른 이메일 주소 형식을 입력해주세요.");
         } else {
             hideError("email-helper");
-            // 여기에 중복 이메일 체크 로직 추가 가능 (서버 요청 필요)
         }
         validateForm();
     });
@@ -88,7 +88,6 @@ document.addEventListener("DOMContentLoaded", function () {
             showError("nickname-helper", "닉네임은 최대 10자까지 작성 가능합니다.");
         } else {
             hideError("nickname-helper");
-            // 여기에 중복 닉네임 체크 로직 추가 가능 (서버 요청 필요)
         }
         validateForm();
     });
@@ -99,8 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const passwordValid = passwordInput.value && document.getElementById("password-helper").style.visibility === "hidden";
         const confirmPasswordValid = confirmPasswordInput.value === passwordInput.value;
         const nicknameValid = nicknameInput.value.trim() && document.getElementById("nickname-helper").style.visibility === "hidden";
-        const profileValid = profilePreview.src !== "default-profile.png";
-        console.log(profilePreview.src);
+        const profileValid = profilePreview.src && profilePreview.src !== "default-profile.png";
 
         if (emailValid && passwordValid && confirmPasswordValid && nicknameValid && profileValid) {
             signupBtn.disabled = false;
@@ -112,10 +110,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 회원가입 버튼 클릭 시
-    signupBtn.addEventListener("click", function (event) {
-        event.preventDefault(); 
+    signupBtn.addEventListener("click", async function (event) { 
+        event.preventDefault();
         if (!signupBtn.disabled) {
-            window.location.href = "login.html"; 
+    
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const nickname = nicknameInput.value.trim();
+            const profileImg = profilePreview.src; 
+
+    
+            const result = await signupUser(email, password, nickname, profileImg);
+            if (result.success) {
+                window.location.href = "login.html";
+            } else {
+                alert(result.message);
+            }
         }
     });
 });

@@ -1,7 +1,8 @@
+import { updateProfile, deleteUser } from "../api/userService.js"; 
+
 document.addEventListener("DOMContentLoaded", function () {
     const profilePicInput = document.getElementById("profile-pic");
     const profilePreview = document.getElementById("profile-preview");
-    const profileHelper = document.getElementById("profile-helper");
     const emailInput = document.getElementById("email");
     const nicknameInput = document.getElementById("nickname");
     const editButton = document.getElementById("edit-button");
@@ -32,14 +33,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 profilePreview.src = e.target.result;
                 profilePreview.style.display = "block"; 
                 editIcon.style.display = "none";
-                hideError(profileHelper);
+                hideError("profile-helper");
             };
             reader.readAsDataURL(file);
         }
         else{
             profilePreview.style.display = "none";
             editIcon.style.display = "block";
-            showError(profileHelper,"프로필 사진을 추가해주세요.");
+            showError("profile-helper","프로필 사진을 추가해주세요.");
         }
     });
 
@@ -53,7 +54,6 @@ document.addEventListener("DOMContentLoaded", function () {
             showError("email-helper", "올바른 이메일 주소 형식을 입력해주세요.");
         } else {
             hideError("email-helper");
-            // 여기에 중복 이메일 체크 로직 추가 가능 (서버 요청 필요)
         }
         validateForm();
     });
@@ -69,7 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
             showError("nickname-helper", "닉네임은 최대 10자까지 작성 가능합니다.");
         } else {
             hideError("nickname-helper");
-            // 여기에 중복 닉네임 체크 로직 추가 가능 (서버 요청 필요)
         }
         validateForm();
     });
@@ -90,15 +89,23 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // 수정하기 버튼 클릭 시
-    editButton.addEventListener("click", function (event) {
+    editButton.addEventListener("click", async function (event) { 
         event.preventDefault(); 
         if (!editButton.disabled) {
-            alert("수정 완료");
-            window.location.href = "../community/posts.html"; 
+            const email = emailInput.value.trim();         
+            const nickname = nicknameInput.value.trim();       
+            const profileImg = profilePreview.src;             
+
+            const result = await updateProfile(email, nickname, profileImg); 
+            if (result.success) {
+                window.location.href = "../community/posts.html";
+            } else {
+                alert(result.message);
+            }
         }
     });
 
-    // 회원탈퇴
+    
     function openDeleteModal() {
         document.getElementById('delete-modal').style.display = 'flex';
     }
@@ -116,7 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
     confirmButton.addEventListener("click", function (event) {
         event.preventDefault();
         closeDeleteModal();
-        //탈퇴 로직 처리(서버)
+        deleteUser();
         window.location.href = "../auth/login.html"; 
     });
 });

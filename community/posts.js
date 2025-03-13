@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
+import { getPosts, getUserById } from "../api/info.js"; 
+
+document.addEventListener("DOMContentLoaded", async function () {
     const postList = document.getElementById("post-list");
     const writeBtn = document.getElementById("write-btn");
     const sentinel = document.getElementById("sentinel");
@@ -12,15 +14,12 @@ document.addEventListener("DOMContentLoaded", function () {
         threshold: 0.1
     };
 
-    let posts = [
-        { title: "첫 번째 게시글", likes: 1200, comments: 15, views: 10500, date: "2024-02-19 12:30:00", profile: "../assets/image/커피.jpg", nickname: "사용자1" },
-        { title: "두 번째 게시글", likes: 999, comments: 2, views: 500, date: "2024-02-18 14:10:00", profile: "../assets/image/커피.jpg", nickname: "사용자2" },
-        { title: "세 번째 게시글", likes: 20500, comments: 100, views: 200000, date: "2024-02-17 09:45:00", profile: "../assets/image/커피.jpg", nickname: "사용자3" },
-        { title: "네 번째 게시글", likes: 20500, comments: 100, views: 200000, date: "2024-02-17 09:45:00", profile: "../assets/image/커피.jpg", nickname: "사용자3" },
-        { title: "다섯 번째 게시글", likes: 20500, comments: 100, views: 200000, date: "2024-02-17 09:45:00", profile: "../assets/image/커피.jpg", nickname: "사용자3" },
-        { title: "여섯 번째 게시글", likes: 20500, comments: 100, views: 200000, date: "2024-02-17 09:45:00", profile: "../assets/image/커피.jpg", nickname: "사용자3" },
-        { title: "일곱 번째 게시글", likes: 20500, comments: 100, views: 200000, date: "2024-02-17 09:45:00", profile: "../assets/image/커피.jpg", nickname: "사용자3" }
-    ];
+    let posts = [];
+    try {
+        posts = await getPosts();
+    } catch (error) {
+        console.error("게시글 데이터를 불러오는 중 오류 발생:", error);
+    }
 
     let visiblePosts = 0;
 
@@ -31,31 +30,44 @@ document.addEventListener("DOMContentLoaded", function () {
             : num;
     }
 
+    function formatDate(isoString) {
+        const date = new Date(isoString);
+        return new Intl.DateTimeFormat("ko-KR", {
+            year: "numeric",
+            month: "long", 
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false
+        }).format(date);
+    }
+
     function truncateTitle(title, maxLength = 26) {
         return title.length > maxLength ? title.substring(0, maxLength) : title;
     }
 
-    function renderPosts() {
+    async function renderPosts() {
         while (visiblePosts < posts.length) {
             const post = posts[visiblePosts];
             const postCard = document.createElement("div");
             postCard.classList.add("post-card");
+            const author = await getUserById(post.author);
             postCard.innerHTML = `
                 <div class="post-title">${truncateTitle(post.title)}</div>
                 <div class="post-info">
                     <span class="info-style">좋아요 ${formatNumber(post.likes)}</span>
-                    <span class="info-style">댓글 ${formatNumber(post.comments)}</span>
+                    <span class="info-style">댓글 ${formatNumber(post.comments.length)}</span>
                     <span>조회수 ${formatNumber(post.views)}</span>
-                    <span style="float: right;">${post.date}</span>
+                    <span style="float: right;">${formatDate(post.created_at)}</span>
                 </div>
                 <div class="post-divider"></div>
                 <div class="comment-section">
-                    <img src="${post.profile}" alt="프로필" class="comment-profile">
-                    <span id="nickname">${post.nickname}</span>
+                    <img src="${author.profile.img}" alt="프로필" class="comment-profile">
+                    <span id="nickname">${author.profile.nickname}</span>
                 </div>
             `;
             postCard.addEventListener('click', function () {
-                window.location.href = "viewpost.html";  // 클릭 시 상세 페이지로 이동
+                window.location.href = "viewpost.html?postid=" + post.id;
             });
             postList.insertBefore(postCard, sentinel);
             visiblePosts++;

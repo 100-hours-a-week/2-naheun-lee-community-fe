@@ -1,3 +1,5 @@
+import { updatePassword } from "../api/userService.js";
+
 document.addEventListener("DOMContentLoaded", function () {
     const passwordInput = document.getElementById("password");
     const confirmPasswordInput = document.getElementById("confirm-password");
@@ -52,11 +54,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     
     // 수정하기 버튼 클릭 시
-    editButton.addEventListener("click", function (event) {
+    editButton.addEventListener("click", async function (event) { 
         event.preventDefault();
         if (!editButton.disabled) {
-            alert("수정 완료");
-            window.location.href = "../community/posts.html"; 
+            const newPassword = passwordInput.value; 
+            const result = await updatePassword(newPassword); 
+            if (result.success) {
+                window.location.href = "../community/posts.html"; 
+            } else {
+                alert(result.message);
+            }
         }
     });
 });

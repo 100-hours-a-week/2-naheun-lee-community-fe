@@ -1,3 +1,5 @@
+import { createPost } from "../api/postService.js";
+
 document.addEventListener("DOMContentLoaded", function () {
     const titleInput = document.getElementById("title");
     const contentInput = document.getElementById("content");
@@ -39,8 +41,22 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    writeBtn.addEventListener("click", function (){
-        alert("게시글이 등록되었습니다.");
-        window.location.href = "posts.html"
+    // 게시글 등록
+    writeBtn.addEventListener("click", async function (event) {
+        event.preventDefault(); 
+
+        const title = titleInput.value.trim();
+        const content = contentInput.value.trim();
+        const file = fileInput.files[0]; 
+
+      
+        const result = await createPost(title, content, file);
+
+        if (result.success) {
+            alert("게시글이 등록되었습니다.");
+            window.location.href = "posts.html"; 
+        } else {
+            alert(result.message); 
+        }
     });
 });
