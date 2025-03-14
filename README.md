@@ -12,7 +12,7 @@
 
 ```html
 2-NAHEUN-LEE-COMMUNITY-FE/
-│── api/ 🆕
+│── api/✅
 │   │── info.js
 │   │── postService.js
 │   └── userService.js
@@ -21,8 +21,8 @@
 │   │── component/
 │   │   └── DropdownMenu.js
 │   │── fonts/
-│   │   └── SUIT-Regular.woff2 🆕
-│   └── image/🆕
+│   │   └── SUIT-Regular.woff2✅
+│   └── image/✅
 │       │── content.svg(게시글 내용 예시)
 │       │── testuser1.png
 │       │── testuser2.png
@@ -50,7 +50,7 @@
 │   │── viewpost.html
 │   └── viewpost.js
 │
-│── data/ 🆕
+│── data/✅
 │   │── users.json
 │   └── posts.json
 │
@@ -62,9 +62,11 @@
 │   │── editprofile.html
 │   └── editprofile.js
 │
-│── index.css 🆕
+│── index.css✅
 └── README.md
 ```
+✅: 4주차 과제에 새로 추가된 부분
+
 - api: 서버 역할
 - DropdownMenu: 드롭다운 메뉴 컴포넌트
 - auth: 로그인/회원가입 처리
