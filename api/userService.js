@@ -10,8 +10,10 @@ export async function loginUser(email, password) {
             localStorage.setItem("user", JSON.stringify({
                 id: user.id,
                 email: user.email,
-                nickname: user.profile.nickname,
-                img: user.profile.img
+                profile: {
+                    nickname: user.profile.nickname,
+                    img: user.profile.img
+                }
             }));
 
             return { success: true, data: user };

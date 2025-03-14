@@ -5,7 +5,7 @@
       "password": "!User1111",
       "profile": {
         "nickname": "사용자1",
-        "img": "default-image.png"
+        "img": "../assets/images/testuser1.png"
       }
     },
     {
@@ -14,7 +14,7 @@
       "password": "!User2222",
       "profile": {
         "nickname": "사용자2",
-        "img": "default-image.png"
+        "img": "../assets/images/testuser2.png"
       }
     },
     {
@@ -23,7 +23,7 @@
       "password": "!User3333",
       "profile": {
         "nickname": "사용자3",
-        "img": "default-image.png"
+        "img": "../assets/images/testuser3.png"
       }
     }
   ]

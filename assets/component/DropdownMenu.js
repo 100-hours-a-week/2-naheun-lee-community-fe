@@ -1,8 +1,17 @@
+import { getCurrentUser } from "../../api/info.js"; 
+
 class DropdownMenu {
     constructor() {}
 
-    render(containerId) {
+    async render(containerId) {
         const container = document.getElementById(containerId);
+        const user = await getCurrentUser(); 
+        const profileImgSrc = user && user.profile.img ? user.profile.img : "default-profile.png";
+
+        const profileImgElement = document.getElementById("profile-img");
+        if (profileImgElement) {
+            profileImgElement.src = profileImgSrc;
+        }
 
         container.innerHTML = `
             <style>
@@ -82,3 +91,5 @@ class DropdownMenu {
         });
     }
 }
+
+window.DropdownMenu = DropdownMenu;

@@ -60,6 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const newPassword = passwordInput.value; 
             const result = await updatePassword(newPassword); 
             if (result.success) {
+                alert("비밀번호가 수정되었습니다.")
                 window.location.href = "../community/posts.html"; 
             } else {
                 alert(result.message);

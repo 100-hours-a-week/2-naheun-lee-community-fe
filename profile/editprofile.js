@@ -1,6 +1,7 @@
+import { getCurrentUser } from "../api/info.js";
 import { updateProfile, deleteUser } from "../api/userService.js"; 
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
     const profilePicInput = document.getElementById("profile-pic");
     const profilePreview = document.getElementById("profile-preview");
     const emailInput = document.getElementById("email");
@@ -13,6 +14,26 @@ document.addEventListener("DOMContentLoaded", function () {
     const dropdown = new DropdownMenu();
     
     dropdown.render("dropdown");
+
+    async function loadUserProfile() {
+        const user = await getCurrentUser(); 
+        if (!user) {
+            alert("로그인이 필요합니다.");
+            window.location.href = "../auth/login.html"; 
+            return;
+        }
+
+        emailInput.value = user.email; 
+        nicknameInput.value = user.profile.nickname;
+        profilePreview.src = user.profile.img; 
+        profilePreview.style.display = "block"; 
+        editIcon.style.display = "none";
+
+        validateForm(); 
+    }
+
+    // 프로필 정보 로드
+    await loadUserProfile();
 
     function showError(id, message) {
         const element = document.getElementById(id);
@@ -36,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 hideError("profile-helper");
             };
             reader.readAsDataURL(file);
+            validateForm();
         }
         else{
             profilePreview.style.display = "none";
@@ -73,11 +95,12 @@ document.addEventListener("DOMContentLoaded", function () {
         validateForm();
     });
 
-    // 폼 유효성 검사 및 회원가입 버튼 활성화
+    // 폼 유효성 검사 및 버튼 활성화
     function validateForm() {
-        const emailValid = emailInput.value.trim() && document.getElementById("email-helper").style.visibility === "hidden";
-        const nicknameValid = nicknameInput.value.trim() && document.getElementById("nickname-helper").style.visibility === "hidden";
+        const emailValid = emailInput.value.trim().length > 0 && window.getComputedStyle(document.getElementById("email-helper")).visibility === "hidden";
+        const nicknameValid = nicknameInput.value.trim().length > 0 && window.getComputedStyle(document.getElementById("nickname-helper")).visibility === "hidden";
         const profileValid = profilePreview.src !== "default-profile.png";
+
 
         if (emailValid && nicknameValid && profileValid) {
             editButton.disabled = false;
@@ -88,7 +111,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // 수정하기 버튼 클릭 시
+    // 프로필 정보 수정 이벤트
     editButton.addEventListener("click", async function (event) { 
         event.preventDefault(); 
         if (!editButton.disabled) {
@@ -98,6 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const result = await updateProfile(email, nickname, profileImg); 
             if (result.success) {
+                alert("프로필 정보가 수정되었습니다.")
                 window.location.href = "../community/posts.html";
             } else {
                 alert(result.message);
@@ -105,15 +129,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    
+    // 회원 탈퇴 모달    
     function openDeleteModal() {
         document.getElementById('delete-modal').style.display = 'flex';
     }
-
     function closeDeleteModal() {
         document.getElementById('delete-modal').style.display = 'none';
     }
-
     loginButton.addEventListener("click", function (event) {
         openDeleteModal();
     });
