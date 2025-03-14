@@ -12,11 +12,21 @@
 
 ```html
 2-NAHEUN-LEE-COMMUNITY-FE/
+│── api/ 🆕
+│   │── info.js
+│   │── postService.js
+│   └── userService.js
+│
 │── assets/
 │   │── component/
 │   │   └── DropdownMenu.js
-│   └── image/
-│       └── 커피.jpg
+│   │── fonts/
+│   │   └── SUIT-Regular.woff2 🆕
+│   └── image/🆕
+│       │── content.svg(게시글 내용 예시)
+│       │── testuser1.png
+│       │── testuser2.png
+│       └── testuser3.png
 │
 │── auth/
 │   │── login.css
@@ -40,6 +50,10 @@
 │   │── viewpost.html
 │   └── viewpost.js
 │
+│── data/ 🆕
+│   │── users.json
+│   └── posts.json
+│
 │── profile/  
 │   │── editpassword.css
 │   │── editpassword.html
@@ -48,9 +62,10 @@
 │   │── editprofile.html
 │   └── editprofile.js
 │
+│── index.css 🆕
 └── README.md
 ```
-
+- api: 서버 역할
 - DropdownMenu: 드롭다운 메뉴 컴포넌트
 - auth: 로그인/회원가입 처리
 - community: 게시판 기능 수행
