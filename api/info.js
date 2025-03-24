@@ -1,54 +1,84 @@
-// 현재 로그인된 사용자 정보 가져오기: Authorization token 역할
-export function getCurrentUser() {
-    const user = localStorage.getItem("user");
-    return user ? JSON.parse(user) : null;
+// 현재 로그인된 사용자 정보 
+export function getAuthToken() {
+    return localStorage.getItem("token");
 }
 
-// 사용자 목록 가져오기
-export async function getUsers() {
-    try {
-        const response = await fetch('/data/users.json');
-        if (!response.ok) {
-            throw new Error('네트워크 오류: 데이터를 가져올 수 없습니다.');
-        }
-        return await response.json();
-    } catch (error) {
-        console.error('사용자 목록을 가져오는 중 오류 발생:', error);
-        return [];
-    }
+// 인증된 사용자 요청 형식(헤더에 토큰 포함)
+export async function authFetch(url, options = {}) {
+    const token = getAuthToken();
+
+    const headers = options.headers || {};
+    const isFormData = options.body instanceof FormData;
+
+    const defaultHeaders = {
+        ...headers,
+        ...(token && { "Authorization": `Bearer ${token}` }),
+        ...(!isFormData && { "Content-Type": "application/json" }),
+    };
+
+    return fetch(url, {
+        ...options,
+        headers: defaultHeaders
+    });
 }
 
-// 특정 사용자 정보 가져오기: (GET) /user/profile
-export async function getUserById(userID) {
+// 사용자 정보 가져오기: (GET) /user/profile
+export async function getUserProfile() {
     try {
-        const users = await getUsers(); 
-        const user = users.find(user => user.id === userID);  
-        if (user) {
-            return user;
+        const response = await authFetch("http://localhost:8080/user", {
+            method: "GET"
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            return {
+                success: true,
+                data: result.data
+            };
         } else {
-            throw new Error('사용자를 찾을 수 없습니다.');
+            const result = await response.json();
+            return {
+                success: false,
+                message: result.message || "회원 정보를 가져올 수 없습니다."
+            };
         }
     } catch (error) {
-        console.error('사용자 정보를 가져오는 중 오류 발생:', error);
-        return null; 
+        return {
+            success: false,
+            message: "서버와의 연결에 실패했습니다."
+        };
     }
 }
 
-// 게시글 목록 가져오기: (GET) /posts
+// 게시글 목록 가져오기: (GET) post//posts
 export async function getPosts() {
     try {
-        const response = await fetch('/data/posts.json');
-        if (!response.ok) {
-            throw new Error('네트워크 오류: 게시글 데이터를 가져올 수 없습니다.');
+        const response = await authFetch("http://localhost:8080/post/posts", {
+            method: "GET",
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            return {
+                success: true,
+                data: result.data  
+            };
+        } else {
+            const result = await response.json();
+            return {
+                success: false,
+                message: result.message || "게시글을 가져오는 데 실패했습니다."
+            };
         }
-        return await response.json();
     } catch (error) {
-        console.error('게시글 목록을 가져오는 중 오류 발생:', error);
-        return [];
+        return {
+            success: false,
+            message: "서버와의 연결에 실패했습니다."
+        };
     }
 }
 
-// 특정 게시글 정보 가져오기: (GET) /post/{postid}
+// 특정 게시글 정보 가져오기: (GET) /post/{postId}
 export async function getPostById(postId) {
     try {
         const posts = await getPosts(); 
@@ -64,7 +94,7 @@ export async function getPostById(postId) {
     }
 }
 
-//특정 댓글 정보 가져오기: '/comments/{commentid}' 포함된 url에 사용
+//특정 댓글 정보 가져오기: '/comments/{commentId}' 포함된 url에 사용
 export async function getCommentById(postId, commentID) {
     try {
         const post = await getPostById(postId); 

@@ -1,33 +1,32 @@
-import { getCurrentUser, getPosts, getPostById, getCommentById } from "./info.js";
+import { authFetch , getPosts, getPostById, getCommentById } from "./info.js";
 
-// 게시글 등록: (POST) /post
-export async function createPost(title, content, postImg) {
+// 게시글 작성: (POST) /post
+export async function createPost(title, content, imageFile) {
+    const formData = new FormData();
+    formData.append("data", new Blob([JSON.stringify({ title, content })], { type: "application/json" }));
+    
+    if (imageFile) {
+        formData.append("postImage", imageFile);
+    }
+
     try {
-        const user = getCurrentUser(); 
-        if (!user) {
-            return { success: false, message: "로그인이 필요합니다." };
+        const response = await authFetch("http://localhost:8080/post", {
+            method: "POST",
+            body: formData
+        });
+
+        if (response.ok) {
+            return { success: true };
+        } else {
+            const result = await response.json();
+            return { success: false, message: result.message || "게시글 작성 실패" };
         }
-
-        const posts = await getPosts(); 
-        const newPost = {
-            id: posts.length + 1, 
-            author: user.id, 
-            created_at: new Date().toISOString(),
-            title: title,
-            content: content,
-            img: postImg ? URL.createObjectURL(postImg) : "default-image.png",
-            likes: 0,
-            views: 0,
-            comments:[]
-        };
-
-        return { success: true, data: newPost };
     } catch (error) {
-        return { success: false, message: "게시글 작성 중 오류가 발생했습니다." };
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
     }
 }
 
-// 게시글 수정: (PATCH) /post/{postid}
+// 게시글 수정: (PATCH) /post/{postId}
 export async function updatePost(postId, newTitle, newContent, newPostImg) {
     try {
         const user = getCurrentUser();
@@ -54,7 +53,7 @@ export async function updatePost(postId, newTitle, newContent, newPostImg) {
     }
 }
 
-// 게시글 삭제: (DELETE) /post/{postid}
+// 게시글 삭제: (DELETE) /post/{postId}
 export async function deletePost(postId) {
     try {
         const user = getCurrentUser();
@@ -73,7 +72,25 @@ export async function deletePost(postId) {
     }
 }
 
-// 게시글 좋아요 추가: (POST) /post/{postid}likes
+// 조회수 증가: (POST) /patch/{postId}/views
+export async function increaseViewCount(postId) {
+    try {
+        const response = await authFetch(`http://localhost:8080/post/${postId}/views`, {
+            method: "PATCH"
+        });
+        const result = await response.json();
+
+        if (response.ok) {
+            return { success: true, message: result.message };
+        } else {
+            return { success: false, message: result.message || "조회수 증가 실패" };
+        }
+    } catch (error) {
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
+    }
+}
+
+// 게시글 좋아요 추가: (POST) /post/{postId}likes
 export async function addLike() {
     try {
         const user = getCurrentUser();
@@ -88,7 +105,7 @@ export async function addLike() {
     }
 }
 
-// 게시글 좋아요 취소: (DELETE) /post/{postid}likes
+// 게시글 좋아요 취소: (DELETE) /post/{postId}likes
 export async function removeLike() {
     try {
         const user = getCurrentUser();
@@ -103,7 +120,7 @@ export async function removeLike() {
     }
 }
 
-// 댓글 등록: (POST) /post/{postid}/comments
+// 댓글 등록: (POST) /post/{postId}/comments
 export async function addAPIComment(postId, commentText) {
     try {
         const user = getCurrentUser();
@@ -125,7 +142,7 @@ export async function addAPIComment(postId, commentText) {
     }
 }
 
-// 댓글 수정: (PATCH) /post/{postid}/comments/{commentid}
+// 댓글 수정: (PATCH) /post/{postId}/comments/{commentId}
 export async function editAPIComment(postId, commentId, newCommentText) {
     try {
         const user = getCurrentUser();
@@ -150,7 +167,7 @@ export async function editAPIComment(postId, commentId, newCommentText) {
     }
 }
 
-// 댓글 삭제: (DELETE) /post/{postid}/comments/{commentid}
+// 댓글 삭제: (DELETE) /post/{postId}/comments/{commentId}
 export async function deleteAPIComment(postId, commentId) {
     try {
         const user = getCurrentUser();

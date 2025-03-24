@@ -117,10 +117,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const email = emailInput.value.trim();
             const password = passwordInput.value;
             const nickname = nicknameInput.value.trim();
-            const profileImg = profilePreview.src; 
+            const file = profilePicInput.files[0];  
 
-    
-            const result = await signupUser(email, password, nickname, profileImg);
+            const result = await signupUser(email, password, nickname, file);
+            
             if (result.success) {
                 window.location.href = "login.html";
             } else {

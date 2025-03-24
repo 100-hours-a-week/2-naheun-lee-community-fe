@@ -65,15 +65,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const email = emailInput.value;
         const password = passwordInput.value;
         
-        // loginUser API 호출
+        // loginUser API 호출(임시)
         const result = await loginUser(email, password);
+
         if (result.success) {
             window.location.href = "../community/posts.html";
         } else {
-            alert(result.message);
+            alert(result.message); 
         }
-
-
     });
 });
 
