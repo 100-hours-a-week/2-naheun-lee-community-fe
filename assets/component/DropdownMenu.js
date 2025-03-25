@@ -1,12 +1,13 @@
-import { getCurrentUser } from "../../api/info.js"; 
+import { getUserProfile } from "../../api/info.js"; 
 
 class DropdownMenu {
     constructor() {}
 
     async render(containerId) {
         const container = document.getElementById(containerId);
-        const user = await getCurrentUser(); 
-        const profileImgSrc = user && user.profile.img ? user.profile.img : "default-profile.png";
+        const result = await getUserProfile();
+        const user = result.success ? result.data : null;
+        const profileImgSrc = user && user.profileImg ? user.profileImg : "default-profile.png";
 
         const profileImgElement = document.getElementById("profile-img");
         if (profileImgElement) {

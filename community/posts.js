@@ -1,4 +1,5 @@
-import { getPosts, getUserById } from "../api/info.js"; 
+import { getPosts } from "../api/info.js"; 
+import { increaseViewCount } from "../api/postService.js"
 
 document.addEventListener("DOMContentLoaded", async function () {
     const postList = document.getElementById("post-list");
@@ -15,31 +16,22 @@ document.addEventListener("DOMContentLoaded", async function () {
     };
 
     let posts = [];
-    try {
-        posts = await getPosts();
-    } catch (error) {
-        console.error("게시글 데이터를 불러오는 중 오류 발생:", error);
-    }
+    const result = await getPosts();
 
     let visiblePosts = 0;
+
+    if (result.success) {
+        posts = result.data;
+        renderPosts(posts);  
+    } else {
+        alert(result.message);
+    }
 
     function formatNumber(num) {
         return num >= 100000 ? `${Math.floor(num / 100000)}00k`
             : num >= 10000 ? `${Math.floor(num / 1000)}k`
             : num >= 1000 ? `${(num / 1000).toFixed(1)}k`
             : num;
-    }
-
-    function formatDate(isoString) {
-        const date = new Date(isoString);
-        return new Intl.DateTimeFormat("ko-KR", {
-            year: "numeric",
-            month: "long", 
-            day: "numeric",
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false
-        }).format(date);
     }
 
     function truncateTitle(title, maxLength = 26) {
@@ -51,23 +43,25 @@ document.addEventListener("DOMContentLoaded", async function () {
             const post = posts[visiblePosts];
             const postCard = document.createElement("div");
             postCard.classList.add("post-card");
-            const author = await getUserById(post.author);
             postCard.innerHTML = `
                 <div class="post-title">${truncateTitle(post.title)}</div>
                 <div class="post-info">
-                    <span class="info-style">좋아요 ${formatNumber(post.likes)}</span>
-                    <span class="info-style">댓글 ${formatNumber(post.comments.length)}</span>
+                    <span class="info-style">좋아요 ${formatNumber(post.likesCount)}</span>
+                    <span class="info-style">댓글 ${formatNumber(post.commentsCount)}</span>
                     <span>조회수 ${formatNumber(post.views)}</span>
-                    <span style="float: right;">${formatDate(post.created_at)}</span>
+                    <span style="float: right;">${post.createdAt}</span>
                 </div>
                 <div class="post-divider"></div>
                 <div class="comment-section">
-                    <img src="${author.profile.img}" alt="프로필" class="comment-profile">
-                    <span id="nickname">${author.profile.nickname}</span>
+                    <img src="${post.user.profileImg}" alt="프로필" class="comment-profile">
+                    <span id="nickname">${post.user.nickname}</span>
                 </div>
             `;
-            postCard.addEventListener('click', function () {
-                window.location.href = "viewpost.html?postid=" + post.id;
+            postCard.addEventListener('click', async function () {
+                if (postCard.dataset.loading === "true") return; //더블클릭 요청 방지
+                postCard.dataset.loading = "true";
+                const result = await increaseViewCount(post.postId);
+                if (result.success) window.location.href = "viewpost.html?postId=" + post.postId;
             });
             postList.insertBefore(postCard, sentinel);
             visiblePosts++;
@@ -89,7 +83,5 @@ document.addEventListener("DOMContentLoaded", async function () {
     writeBtn.addEventListener("click", function () {
         window.location.href = "makepost.html";
     });
-
-
 
 });

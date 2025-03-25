@@ -79,18 +79,31 @@ export async function getPosts() {
 }
 
 // 특정 게시글 정보 가져오기: (GET) /post/{postId}
-export async function getPostById(postId) {
+export async function getPostInfo(postId) {
     try {
-        const posts = await getPosts(); 
-        const post = posts.find(post => post.id === postId);  
-        if (post) {
-            return post;
+        const response = await authFetch(`http://localhost:8080/post/${postId}`, {
+            method: "GET"
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            return {
+                success: true,
+                data: result.data 
+            };
         } else {
-            throw new Error('게시글을 찾을 수 없습니다.');
+            const result = await response.json();
+            return {
+                success: false,
+                message: result.message || "게시글을 가져오는 데 실패했습니다."
+            };
         }
     } catch (error) {
-        console.error('게시글 정보를 가져오는 중 오류 발생:', error);
-        return null; 
+        console.error("게시글 정보를 가져오는 중 오류 발생:", error);
+        return {
+            success: false,
+            message: "서버와의 연결에 실패했습니다."
+        };
     }
 }
 

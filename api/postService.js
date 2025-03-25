@@ -1,4 +1,4 @@
-import { authFetch , getPosts, getPostById, getCommentById } from "./info.js";
+import { authFetch } from "./info.js";
 
 // 게시글 작성: (POST) /post
 export async function createPost(title, content, imageFile) {
@@ -90,98 +90,96 @@ export async function increaseViewCount(postId) {
     }
 }
 
-// 게시글 좋아요 추가: (POST) /post/{postId}likes
-export async function addLike() {
+// 게시글 좋아요 추가: (POST) /post/{postId}.likes
+export async function addLike(postId) {
     try {
-        const user = getCurrentUser();
-        if (!user) {
-            return { success: false, message: "로그인이 필요합니다." };
-        }
+        const response = await authFetch(`http://localhost:8080/post/${postId}/likes`, {
+            method: "POST"
+        });
 
-        //백엔드와 데이터베이스에서 추가 로직 필요!! 일단 프론트엔드에서 +1로 처리
-        return { success: true, message: "좋아요가 추가되었습니다." };
+        if (response.ok) {
+            return { success: true, message: "좋아요가 추가되었습니다." };
+        } else {
+            const result = await response.json();
+            return { success: false, message: result.message || "좋아요 추가 실패" };
+        }
     } catch (error) {
-        return { success: false, message: "좋아요 업데이트 중 오류가 발생했습니다." };
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
     }
 }
 
-// 게시글 좋아요 취소: (DELETE) /post/{postId}likes
-export async function removeLike() {
+// 게시글 좋아요 취소: (DELETE) /post/{postId}/likes
+export async function removeLike(postId) {
     try {
-        const user = getCurrentUser();
-        if (!user) {
-            return { success: false, message: "로그인이 필요합니다." };
-        }
+        const response = await authFetch(`http://localhost:8080/post/${postId}/likes`, {
+            method: "DELETE"
+        });
 
-        //백엔드와 데이터베이스에서 추가 로직 필요!! 일단 프론트엔드에서 -1로 처리
-        return { success: true, message: "좋아요가 취소되었습니다." };
+        if (response.ok) {
+            return { success: true, message: "좋아요가 취소되었습니다." };
+        } else {
+            const result = await response.json();
+            return { success: false, message: result.message || "좋아요 취소 실패" };
+        }
     } catch (error) {
-        return { success: false, message: "좋아요 업데이트 중 오류가 발생했습니다." };
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
     }
 }
 
 // 댓글 등록: (POST) /post/{postId}/comments
 export async function addAPIComment(postId, commentText) {
     try {
-        const user = getCurrentUser();
-        if (!user) {
-            return { success: false, message: "로그인이 필요합니다." };
-        }
+        const response = await authFetch(`http://localhost:8080/post/${postId}/comments`, {
+            method: "POST",
+            body: JSON.stringify({ comment: commentText })
+        });
 
-        const post = await getPostById(postId);
-        const newComment = {
-            id:  post.comments.length + 1, 
-            content: commentText,
-            created_at: new Date().toISOString(),
-            userId: user.id
+        if (response.ok) {
+            const result = await response.json();
+            return { success: true};
+        } else {
+            const result = await response.json();
+            return { success: false, message: result.message || "댓글 등록 실패" };
         }
-
-        return { success: true, data: newComment }; 
     } catch (error) {
-        return { success: false, message: "댓글 등록 중 오류가 발생했습니다." };
+        return { success: false, message: "서버 오류가 발생했습니다." };
     }
 }
 
 // 댓글 수정: (PATCH) /post/{postId}/comments/{commentId}
 export async function editAPIComment(postId, commentId, newCommentText) {
     try {
-        const user = getCurrentUser();
-        if (!user) {
-            return { success: false, message: "로그인이 필요합니다." };
+        const response = await authFetch(`http://localhost:8080/post/${postId}/comments/${commentId}`, {
+            method: "PATCH",
+            body: JSON.stringify({ comment: newCommentText })
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            return { success: true, data: result.data };
+        } else {
+            const result = await response.json();
+            return { success: false, message: result.message || "댓글 수정 실패" };
         }
-
-        let comment = await getCommentById(postId, commentId);
-        if (comment.userId !== user.id) {
-            return { success: false, message: "댓글 수정 권한이 없습니다." };
-        }
-
-        comment = {
-            ...comment,
-            content: newCommentText,
-            created_at: new Date().toISOString() 
-        };
-
-        return { success: true, data: comment }; 
     } catch (error) {
-        return { success: false, message: "댓글 수정 중 오류가 발생했습니다." };
+        return { success: false, message: "서버 오류가 발생했습니다." };
     }
 }
 
 // 댓글 삭제: (DELETE) /post/{postId}/comments/{commentId}
 export async function deleteAPIComment(postId, commentId) {
     try {
-        const user = getCurrentUser();
-        if (!user) {
-            return { success: false, message: "로그인이 필요합니다." };
-        }
+        const response = await authFetch(`http://localhost:8080/post/${postId}/comments/${commentId}`, {
+            method: "DELETE"
+        });
 
-        const comment = await getCommentById(postId, commentId);
-        if (comment.userId !== user.id) {
-            return { success: false, message: "댓글 삭제 권한이 없습니다." };
+        if (response.ok) {
+            return { success: true };
+        } else {
+            const result = await response.json();
+            return { success: false, message: result.message || "댓글 삭제 실패" };
         }
-
-        return { success: true, message: "댓글이 삭제되었습니다." };
     } catch (error) {
-        return { success: false, message: "댓글 삭제 중 오류가 발생했습니다." };
+        return { success: false, message: "서버 오류가 발생했습니다." };
     }
 }
