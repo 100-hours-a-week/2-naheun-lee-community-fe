@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     // 게시글 수정 페이지로 이동
     editBtn.addEventListener('click', function () {
-        window.location.href = "editpost.html?postid=" + postId;
+        window.location.href = "editpost.html?postId=" + postId;
     });
     
     // 좋아요 추가/취소 처리(이벤트 위임 방식)

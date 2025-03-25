@@ -142,10 +142,20 @@ header {
     text-align: center;
     font-weight: 400;
     color: #000;
+    flex-shrink: 0; 
 }
 
 .file-group {
     width: 100%;
     display: flex;
     align-items: center;
+}
+
+#file-name {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    text-align: left;
 }

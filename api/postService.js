@@ -2,14 +2,14 @@ import { authFetch } from "./info.js";
 
 // 게시글 작성: (POST) /post
 export async function createPost(title, content, imageFile) {
-    const formData = new FormData();
-    formData.append("data", new Blob([JSON.stringify({ title, content })], { type: "application/json" }));
-    
-    if (imageFile) {
-        formData.append("postImage", imageFile);
-    }
-
     try {
+        const formData = new FormData();
+        formData.append("data", new Blob([JSON.stringify({ title, content })], { type: "application/json" }));
+
+        if (imageFile) {
+            formData.append("postImage", imageFile);
+        }
+
         const response = await authFetch("http://localhost:8080/post", {
             method: "POST",
             body: formData
@@ -22,34 +22,37 @@ export async function createPost(title, content, imageFile) {
             return { success: false, message: result.message || "게시글 작성 실패" };
         }
     } catch (error) {
-        return { success: false, message: "서버와의 연결에 실패했습니다." };
+        return { success: false, message: "서버 오류가 발생했습니다." };
     }
 }
 
 // 게시글 수정: (PATCH) /post/{postId}
-export async function updatePost(postId, newTitle, newContent, newPostImg) {
+export async function updatePost(postId, { title, content, imageFile }) {
     try {
-        const user = getCurrentUser();
-        if (!user) {
-            return { success: false, message: "로그인이 필요합니다." };
+        const data = {};
+        if (title !== undefined && title !== null) data.title = title;
+        if (content !== undefined && content !== null) data.content = content;
+
+        const formData = new FormData();
+        formData.append("data", new Blob([JSON.stringify(data)], { type: "application/json" }));
+
+        if (imageFile) {
+            formData.append("postImage", imageFile);
         }
 
-        let  post = await getPostById(postId);
-        if (post.author !== user.id) {
-            return { success: false, message: "게시글 수정 권한이 없습니다." };
+        const response = await authFetch(`http://localhost:8080/post/${postId}`, {
+            method: "PATCH",
+            body: formData
+        });
+
+        if (response.ok) {
+            return { success: true };
+        } else {
+            const result = await response.json();
+            return { success: false, message: result.message || "게시글 수정 실패" };
         }
-
-       post = {
-            ...post,
-            title: newTitle,
-            content: newContent,
-            img: newPostImg ? URL.createObjectURL(newPostImg) : "default-image.png",
-            created_at: new Date().toISOString() 
-        };
-
-        return { success: true, data: post};
     } catch (error) {
-        return { success: false, message: "게시글 수정 중 오류가 발생했습니다." };
+        return { success: false, message: "서버 오류가 발생했습니다." };
     }
 }
 
