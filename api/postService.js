@@ -22,7 +22,7 @@ export async function createPost(title, content, imageFile) {
             return { success: false, message: result.message || "게시글 작성 실패" };
         }
     } catch (error) {
-        return { success: false, message: "서버 오류가 발생했습니다." };
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
     }
 }
 
@@ -52,26 +52,25 @@ export async function updatePost(postId, { title, content, imageFile }) {
             return { success: false, message: result.message || "게시글 수정 실패" };
         }
     } catch (error) {
-        return { success: false, message: "서버 오류가 발생했습니다." };
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
     }
 }
 
 // 게시글 삭제: (DELETE) /post/{postId}
 export async function deletePost(postId) {
     try {
-        const user = getCurrentUser();
-        if (!user) {
-            return { success: false, message: "로그인이 필요합니다." };
-        }
+        const response = await authFetch(`http://localhost:8080/post/${postId}`, {
+            method: "DELETE",
+        });
 
-        const post = await getPostById(postId);
-        if (post.author !== user.id) {
-            return { success: false, message: "게시글 삭제 권한이 없습니다." };
+        if (response.ok) {
+            return { success: true };
+        } else {
+            const result = await response.json();
+            return { success: false, message: result.message || "게시글 삭제 실패" };
         }
-
-        return { success: true, message: "게시글이 삭제되었습니다." };
     } catch (error) {
-        return { success: false, message: "게시글 삭제 중 오류가 발생했습니다." };
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
     }
 }
 
@@ -101,7 +100,7 @@ export async function addLike(postId) {
         });
 
         if (response.ok) {
-            return { success: true, message: "좋아요가 추가되었습니다." };
+            return { success: true };
         } else {
             const result = await response.json();
             return { success: false, message: result.message || "좋아요 추가 실패" };
@@ -145,7 +144,7 @@ export async function addAPIComment(postId, commentText) {
             return { success: false, message: result.message || "댓글 등록 실패" };
         }
     } catch (error) {
-        return { success: false, message: "서버 오류가 발생했습니다." };
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
     }
 }
 
@@ -165,7 +164,7 @@ export async function editAPIComment(postId, commentId, newCommentText) {
             return { success: false, message: result.message || "댓글 수정 실패" };
         }
     } catch (error) {
-        return { success: false, message: "서버 오류가 발생했습니다." };
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
     }
 }
 
@@ -183,6 +182,6 @@ export async function deleteAPIComment(postId, commentId) {
             return { success: false, message: result.message || "댓글 삭제 실패" };
         }
     } catch (error) {
-        return { success: false, message: "서버 오류가 발생했습니다." };
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
     }
 }

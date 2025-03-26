@@ -1,4 +1,4 @@
-import { getPosts } from "../api/info.js"; 
+import { getPostsInfo } from "../api/info.js"; 
 import { increaseViewCount } from "../api/postService.js"
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     };
 
     let posts = [];
-    const result = await getPosts();
+    const result = await getPostsInfo();
 
     let visiblePosts = 0;
 

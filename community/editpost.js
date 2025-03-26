@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             updateData.content = currentContent;
         }
         if (imageFile) {
-            updateData.image = imageFile;
+            updateData.imageFile = imageFile;
         }
 
         if (Object.keys(updateData).length === 0) {

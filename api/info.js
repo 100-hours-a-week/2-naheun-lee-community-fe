@@ -23,7 +23,7 @@ export async function authFetch(url, options = {}) {
 }
 
 // 사용자 정보 가져오기: (GET) /user/profile
-export async function getUserProfile() {
+export async function getProfileInfo() {
     try {
         const response = await authFetch("http://localhost:8080/user", {
             method: "GET"
@@ -51,7 +51,7 @@ export async function getUserProfile() {
 }
 
 // 게시글 목록 가져오기: (GET) post//posts
-export async function getPosts() {
+export async function getPostsInfo() {
     try {
         const response = await authFetch("http://localhost:8080/post/posts", {
             method: "GET",
@@ -104,21 +104,5 @@ export async function getPostInfo(postId) {
             success: false,
             message: "서버와의 연결에 실패했습니다."
         };
-    }
-}
-
-//특정 댓글 정보 가져오기: '/comments/{commentId}' 포함된 url에 사용
-export async function getCommentById(postId, commentID) {
-    try {
-        const post = await getPostById(postId); 
-        const comment = post.comments.find(comment => comment.id === commentID);  
-        if (comment) {
-            return comment;
-        } else {
-            throw new Error('댓글을 찾을 수 없습니다.');
-        }
-    } catch (error) {
-        console.error('댓글 정보를 가져오는 중 오류 발생:', error);
-        return null; 
     }
 }

@@ -1,11 +1,12 @@
-import { getUserProfile } from "../../api/info.js"; 
+import { getProfileInfo } from "../../api/info.js"; 
+import { logoutUser } from "../../api/userService.js"; 
 
 class DropdownMenu {
     constructor() {}
 
     async render(containerId) {
         const container = document.getElementById(containerId);
-        const result = await getUserProfile();
+        const result = await getProfileInfo();
         const user = result.success ? result.data : null;
         const profileImgSrc = user && user.profileImg ? user.profileImg : "default-profile.png";
 
@@ -62,7 +63,7 @@ class DropdownMenu {
                 <div class="menu-button">
                     <a href="../profile/editpassword.html">비밀번호 수정</a>
                 </div>
-                <div class="menu-button">
+                <div class="menu-button" id="logout-btn">
                     <a href="../auth/login.html">로그아웃</a>
                 </div>
             </div>
@@ -75,6 +76,7 @@ class DropdownMenu {
     addEventListeners() {
         const profileImg = document.getElementById('profile-img');
         const profileMenu = document.getElementById('profile-menu');
+        const logoutBtn = document.getElementById('logout-btn');
 
         profileImg.addEventListener("click", (e) => {
             e.stopPropagation();
@@ -83,6 +85,16 @@ class DropdownMenu {
 
         profileMenu.addEventListener("click", (e) => {
             e.stopPropagation();
+        });
+
+        logoutBtn.addEventListener("click", async () => {
+            const result = await logoutUser();
+            if (result.success) {
+                alert("로그아웃되었습니다.");
+                window.location.href = "../auth/login.html";
+            } else {
+                alert(result.message);
+            }
         });
 
         window.addEventListener("click", (e) => {
