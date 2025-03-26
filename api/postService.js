@@ -1,5 +1,5 @@
-import { BASE_URL } from "../assets/config/config.js";
 import { authFetch } from "./info.js";
+import { BASE_URL } from "../assets/config/config.js";
 
 // 게시글 작성: (POST) /post
 export async function createPost(title, content, imageFile) {

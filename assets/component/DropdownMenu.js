@@ -1,5 +1,6 @@
 import { getProfileInfo } from "../../api/info.js"; 
 import { logoutUser } from "../../api/userService.js"; 
+import { BASE_URL } from "../../assets/config/config.js"; 
 
 class DropdownMenu {
     constructor() {}
@@ -7,8 +8,12 @@ class DropdownMenu {
     async render(containerId) {
         const container = document.getElementById(containerId);
         const result = await getProfileInfo();
-        const user = result.success ? result.data : null;
-        const profileImgSrc = user && user.profileImg ? user.profileImg : "default-profile.png";
+        if (!result.success) {
+            alert(result.message);
+            return;
+        }
+        const user = result.data;
+        const profileImgSrc = `${BASE_URL}${user.profileImgUrl}`;
 
         const profileImgElement = document.getElementById("profile-img");
         if (profileImgElement) {

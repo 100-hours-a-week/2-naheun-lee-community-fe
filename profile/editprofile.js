@@ -1,5 +1,6 @@
 import { getProfileInfo } from "../api/info.js";
 import { updateProfile, deleteUser } from "../api/userService.js"; 
+import { BASE_URL } from "../assets/config/config.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
     const profilePicInput = document.getElementById("profile-pic");
@@ -16,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     dropdown.render("dropdown");
 
     let originalNickname = "";
-    let originalProfileImg = "";
+    let originalProfileImgUrl = "";
     let selectedFile = null; 
 
      // 프로필 정보 로드
@@ -30,9 +31,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         const user = result.data;
         emailInput.textContent = user.email;
         nicknameInput.value = user.nickname;
-        profilePreview.src = user.profileImg;
+        if (user.profileImgUrl && user.profileImgUrl !== "default-profile.png") {
+            profilePreview.src = `${BASE_URL}${user.profileImgUrl}`;
+        }
         originalNickname = user.nickname;
-        originalProfileImg = user.profileImg;
+        originalProfileImgUrl = user.profileImgUrl;
 
         validateForm();
     }
@@ -53,20 +56,17 @@ document.addEventListener("DOMContentLoaded", async function () {
     profilePicInput.addEventListener("change", function(event) {
         const file = event.target.files[0];
         if (file) {
+            selectedFile = file; 
             const reader = new FileReader();
             reader.onload = function(e) {
                 profilePreview.src = e.target.result;
-                profilePreview.style.display = "block"; 
-                editIcon.style.display = "none";
-                hideError("profile-helper");
             };
             reader.readAsDataURL(file);
             validateForm();
         }
         else{
-            profilePreview.style.display = "none";
-            editIcon.style.display = "block";
-            showError("profile-helper","프로필 사진을 추가해주세요.");
+            selectedFile = null;
+            profilePreview.src = `${BASE_URL}${originalProfileImgUrl}`;
         }
     });
 
@@ -89,8 +89,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     function validateForm() {
         const nicknameValid = nicknameInput.value.trim().length > 0 && 
         window.getComputedStyle(document.getElementById("nickname-helper")).visibility === "hidden";
-        const profileValid = profilePreview.src !== "" && profilePreview.src !== null &&
-        window.getComputedStyle(document.getElementById("profile-helper")).visibility === "hidden";
+        const profileValid = profilePreview.src !== "" && profilePreview.src !== null;
 
         if ( nicknameValid && profileValid) {
             editButton.disabled = false;

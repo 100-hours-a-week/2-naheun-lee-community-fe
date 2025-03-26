@@ -1,5 +1,5 @@
-import { BASE_URL } from "../assets/config/config.js";
 import { authFetch} from "./info.js";
+import { BASE_URL } from "../assets/config/config.js";
 
 // 로그인: (POST) /user/login
 export async function loginUser(email, password) {

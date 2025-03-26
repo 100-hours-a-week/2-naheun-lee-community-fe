@@ -19,10 +19,11 @@
             <h2 id="edit-title">회원정보 수정</h2>
             <div class="profile-upload">
                 <label for="profile-pic" class="profile-label">프로필 사진*</label>
-                <p class="helper-text" id="profile-helper"></p>
                 <label for="profile-pic" class="profile-circle" id="profile-circle">
-                    <img src="default-profile.png" alt="" id="profile-preview">
-                    <span id="edit-icon">변경</span>
+                    <img  id="profile-preview" alt="프로필 이미지">
+                    <div class="overlay">
+                        <span id="edit-icon">변경</span>
+                    </div>
                 </label>
                 <input type="file" id="profile-pic" accept="image/*" hidden>
             </div>
