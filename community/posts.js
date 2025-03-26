@@ -1,5 +1,6 @@
 import { getPostsInfo } from "../api/info.js"; 
 import { increaseViewCount } from "../api/postService.js"
+import { BASE_URL } from "../assets/config/config.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
     const postList = document.getElementById("post-list");
@@ -41,6 +42,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     async function renderPosts() {
         while (visiblePosts < posts.length) {
             const post = posts[visiblePosts];
+
+            const isActiveUser = post.user.active;
+            const profileImgSrc = isActiveUser ? `${BASE_URL}${post.user.profileImgUrl}`: `${BASE_URL}/profileuploads/default-profile.png`;
+            const nickname = isActiveUser ? post.user.nickname : "(알 수 없음)";
+
             const postCard = document.createElement("div");
             postCard.classList.add("post-card");
             postCard.innerHTML = `
@@ -53,8 +59,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                 </div>
                 <div class="post-divider"></div>
                 <div class="comment-section">
-                    <img src="${post.user.profileImg}" alt="프로필" class="comment-profile">
-                    <span id="nickname">${post.user.nickname}</span>
+                    <img src="${profileImgSrc}" alt="프로필" class="comment-profile">
+                    <span id="nickname">${nickname}</span>
                 </div>
             `;
             postCard.addEventListener('click', async function () {

@@ -1,5 +1,6 @@
 import { getPostInfo } from "../api/info.js";
 import { addAPIComment, editAPIComment, deleteAPIComment, addLike, removeLike, deletePost } from "../api/postService.js";
+import { BASE_URL } from "../assets/config/config.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
     const editBtn =  document.getElementById("editbtn");
@@ -45,19 +46,20 @@ document.addEventListener("DOMContentLoaded", async function () {
     // 게시글 정보 렌더링
     function renderPost() {
         document.querySelector('.title').innerText = postData.title;
-        document.querySelector('.nickname').innerText = postData.user.nickname || "작성자";
-        document.querySelector('.post-img img').src = postData.user.profileImg || "이미지";
+        const isActiveUser = postData.user.active;
+        const profileImgUrl = isActiveUser ? `${BASE_URL}${postData.user.profileImgUrl}` : `${BASE_URL}/profileuploads/default-profile.png`;
+        const nickname = isActiveUser ? postData.user.nickname : "(알 수 없음)";
+        document.querySelector('.nickname').innerText = nickname|| "작성자";
+        document.querySelector('.post-img img').src = profileImgUrl || "이미지";
         document.querySelector('.date').innerText = postData.createdAt;
         const postImgElement = document.querySelector('.post-content img');
-        if (postData.postImg) {
+        if (postData.postImgUrl) {
             if (postImgElement) {
-                postImgElement.src = postData.postImg;
+                postImgElement.src = `${BASE_URL}${postData.postImgUrl}`;
                 postImgElement.style.display = "block"; 
             }
         } else {
-            if (postImgElement) {
-                postImgElement.remove(); 
-            }
+            if (postImgElement) postImgElement.remove(); 
         }
         document.querySelector('.post-content p').innerText = postData.content;
         document.getElementById('like-count').innerText = formatNumber(postData.likesCount);
@@ -77,14 +79,17 @@ document.addEventListener("DOMContentLoaded", async function () {
         commentList.innerHTML = "";
         if (postData.comments && postData.commentsCount > 0) {
             for (const comment of postData.comments) { 
+                const isActiveUser = comment.user.active;
+                const commentImgUrl = isActiveUser ? `${BASE_URL}${comment.user.profileImgUrl}` : `${BASE_URL}/profileuploads/default-profile.png`;
+                const nickname = isActiveUser ? comment.user.nickname : "(알 수 없음)";
                 const commentItem = document.createElement("div");
                 commentItem.classList.add("comment-item");
                 commentItem.setAttribute("data-commentId", comment.commentId);
                 commentItem.innerHTML = `
-                    <div class="post-meta">
+                    <div class="comment-meta">
                         <div class="profile-group">
-                            <span class="comment-img"><img src="${comment.user.profileImg}" alt="프로필"></span>
-                            <span class="nickname">${comment.user.nickname}</span>
+                            <span class="comment-img"><img src="${commentImgUrl}" alt="프로필"></span>
+                            <span class="nickname">${nickname}</span>
                             <span class="date">${comment.createdAt}</span>
                         </div>
                         <div class="btn-group">
