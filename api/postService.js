@@ -1,3 +1,4 @@
+import { BASE_URL } from "../assets/config/config.js";
 import { authFetch } from "./info.js";
 
 // 게시글 작성: (POST) /post
@@ -10,7 +11,7 @@ export async function createPost(title, content, imageFile) {
             formData.append("postImage", imageFile);
         }
 
-        const response = await authFetch("http://localhost:8080/post", {
+        const response = await authFetch(`${BASE_URL}/post`, {
             method: "POST",
             body: formData
         });
@@ -40,7 +41,7 @@ export async function updatePost(postId, { title, content, imageFile }) {
             formData.append("postImage", imageFile);
         }
 
-        const response = await authFetch(`http://localhost:8080/post/${postId}`, {
+        const response = await authFetch(`${BASE_URL}/post/${postId}`, {
             method: "PATCH",
             body: formData
         });
@@ -59,7 +60,7 @@ export async function updatePost(postId, { title, content, imageFile }) {
 // 게시글 삭제: (DELETE) /post/{postId}
 export async function deletePost(postId) {
     try {
-        const response = await authFetch(`http://localhost:8080/post/${postId}`, {
+        const response = await authFetch(`${BASE_URL}/post/${postId}`, {
             method: "DELETE",
         });
 
@@ -77,7 +78,7 @@ export async function deletePost(postId) {
 // 조회수 증가: (POST) /patch/{postId}/views
 export async function increaseViewCount(postId) {
     try {
-        const response = await authFetch(`http://localhost:8080/post/${postId}/views`, {
+        const response = await authFetch(`${BASE_URL}/post/${postId}/views`, {
             method: "PATCH"
         });
         const result = await response.json();
@@ -95,7 +96,7 @@ export async function increaseViewCount(postId) {
 // 게시글 좋아요 추가: (POST) /post/{postId}.likes
 export async function addLike(postId) {
     try {
-        const response = await authFetch(`http://localhost:8080/post/${postId}/likes`, {
+        const response = await authFetch(`${BASE_URL}/post/${postId}/likes`, {
             method: "POST"
         });
 
@@ -113,7 +114,7 @@ export async function addLike(postId) {
 // 게시글 좋아요 취소: (DELETE) /post/{postId}/likes
 export async function removeLike(postId) {
     try {
-        const response = await authFetch(`http://localhost:8080/post/${postId}/likes`, {
+        const response = await authFetch(`${BASE_URL}/post/${postId}/likes`, {
             method: "DELETE"
         });
 
@@ -131,7 +132,7 @@ export async function removeLike(postId) {
 // 댓글 등록: (POST) /post/{postId}/comments
 export async function addAPIComment(postId, commentText) {
     try {
-        const response = await authFetch(`http://localhost:8080/post/${postId}/comments`, {
+        const response = await authFetch(`${BASE_URL}/post/${postId}/comments`, {
             method: "POST",
             body: JSON.stringify({ comment: commentText })
         });
@@ -151,7 +152,7 @@ export async function addAPIComment(postId, commentText) {
 // 댓글 수정: (PATCH) /post/{postId}/comments/{commentId}
 export async function editAPIComment(postId, commentId, newCommentText) {
     try {
-        const response = await authFetch(`http://localhost:8080/post/${postId}/comments/${commentId}`, {
+        const response = await authFetch(`${BASE_URL}/post/${postId}/comments/${commentId}`, {
             method: "PATCH",
             body: JSON.stringify({ comment: newCommentText })
         });
@@ -171,7 +172,7 @@ export async function editAPIComment(postId, commentId, newCommentText) {
 // 댓글 삭제: (DELETE) /post/{postId}/comments/{commentId}
 export async function deleteAPIComment(postId, commentId) {
     try {
-        const response = await authFetch(`http://localhost:8080/post/${postId}/comments/${commentId}`, {
+        const response = await authFetch(`${BASE_URL}/post/${postId}/comments/${commentId}`, {
             method: "DELETE"
         });
 

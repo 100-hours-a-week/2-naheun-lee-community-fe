@@ -1,3 +1,5 @@
+import { BASE_URL } from "../assets/config/config.js";
+
 // 현재 로그인된 사용자 정보 
 export function getAuthToken() {
     return localStorage.getItem("token");
@@ -25,10 +27,10 @@ export async function authFetch(url, options = {}) {
     }
 }
 
-// 사용자 정보 가져오기: (GET) /user/profile
+// 사용자 정보 가져오기: (GET) /user
 export async function getProfileInfo() {
     try {
-        const response = await authFetch("http://localhost:8080/user", {
+        const response = await authFetch(`${BASE_URL}/user`, {
             method: "GET"
         });
 
@@ -56,7 +58,7 @@ export async function getProfileInfo() {
 // 게시글 목록 가져오기: (GET) post//posts
 export async function getPostsInfo() {
     try {
-        const response = await authFetch("http://localhost:8080/post/posts", {
+        const response = await authFetch(`${BASE_URL}/post/posts`, {
             method: "GET",
         });
 
@@ -84,7 +86,7 @@ export async function getPostsInfo() {
 // 특정 게시글 정보 가져오기: (GET) /post/{postId}
 export async function getPostInfo(postId) {
     try {
-        const response = await authFetch(`http://localhost:8080/post/${postId}`, {
+        const response = await authFetch(`${BASE_URL}/post/${postId}`, {
             method: "GET"
         });
 
