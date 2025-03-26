@@ -139,10 +139,16 @@ document.addEventListener("DOMContentLoaded", async function () {
     cancelButton.addEventListener("click", function (event) {
         closeDeleteModal();
     });
-    confirmButton.addEventListener("click", function (event) {
+    confirmButton.addEventListener("click", async function (event) {
         event.preventDefault();
         closeDeleteModal();
-        deleteUser();
-        window.location.href = "../auth/login.html"; 
+    
+        const result = await deleteUser(); 
+        if (result.success) {
+            alert("회원 탈퇴가 완료되었습니다.");
+            window.location.href = "../auth/login.html";
+        } else {
+            alert(result.message);
+        }
     });
 });

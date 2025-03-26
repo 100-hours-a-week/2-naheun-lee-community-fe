@@ -1,9 +1,10 @@
+import { BASE_URL } from "../assets/config/config.js";
 import { authFetch} from "./info.js";
 
 // 로그인: (POST) /user/login
 export async function loginUser(email, password) {
     try {
-        const response = await fetch("http://localhost:8080/user/login", {
+        const response = await fetch(`${BASE_URL}/user/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -46,7 +47,7 @@ export async function signupUser(email, password, nickname, profileImageFile) {
             formData.append("profileImage", profileImageFile);
         }
 
-        const response = await fetch("http://localhost:8080/user", {
+        const response = await fetch(`${BASE_URL}/user`, {
             method: "POST",
             body: formData,
         });
@@ -75,7 +76,7 @@ export async function updateProfile({ nickname, profileImg }) {
             formData.append("profileImage", profileImg); 
         }
 
-        const response = await authFetch("http://localhost:8080/user/profile", {
+        const response = await authFetch(`${BASE_URL}/user/profile`, {
             method: "PATCH",
             body: formData
         });
@@ -94,7 +95,7 @@ export async function updateProfile({ nickname, profileImg }) {
 // 비밀번호 변경: (PATCH) /user/password
 export async function updatePassword(newPassword) {
     try {
-        const response = await authFetch("http://localhost:8080/user/password", {
+        const response = await authFetch(`${BASE_URL}/user/password`, {
             method: "PATCH",
             body: JSON.stringify({ password: newPassword })
         });
@@ -113,7 +114,7 @@ export async function updatePassword(newPassword) {
 // 로그아웃: (POST) /user/logout
 export async function logoutUser() {
     try {
-        const response = await authFetch("http://localhost:8080/user/logout", {
+        const response = await authFetch(`${BASE_URL}/user/logout`, {
             method: "POST",
         });
 
@@ -132,8 +133,24 @@ export async function logoutUser() {
 }
 
 // 회원탈퇴: (DELETE) /user
-export function deleteUser() {
-    localStorage.removeItem("user");
+export async function deleteUser() {
+    try {
+        const response = await authFetch(`${BASE_URL}/user`, {
+            method: "DELETE"
+        });
+
+        localStorage.removeItem("token");
+
+        if (response.ok) {
+            return { success: true };
+        } else {
+            const result = await response.json();
+            return { success: false, message: result.message || "회원 탈퇴 실패" };
+        }
+    } catch (error) {
+        localStorage.removeItem("token");
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
+    }
 }
 
 
