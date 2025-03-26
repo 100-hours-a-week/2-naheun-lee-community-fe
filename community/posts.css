@@ -112,14 +112,14 @@ header {
     margin: 15px 0;
 }
 
-.comment-section {
+.user-section {
     padding:0 20px;
     display: flex;
     align-items: center;
     margin-bottom: 15px;
 }
 
-.comment-profile {
+.user-profile {
     width: 25px;
     height: 25px;
     border-radius: 50%;

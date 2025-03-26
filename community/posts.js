@@ -58,8 +58,8 @@ document.addEventListener("DOMContentLoaded", async function () {
                     <span style="float: right;">${post.createdAt}</span>
                 </div>
                 <div class="post-divider"></div>
-                <div class="comment-section">
-                    <img src="${profileImgSrc}" alt="프로필" class="comment-profile">
+                <div class="user-section">
+                    <img src="${profileImgSrc}" alt="프로필" class="user-profile">
                     <span id="nickname">${nickname}</span>
                 </div>
             `;

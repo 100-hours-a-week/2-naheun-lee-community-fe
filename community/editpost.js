@@ -1,5 +1,5 @@
 import { getPostInfo } from "../api/info.js";
-import { updatePost } from "../api/postService.js";
+import { updatePost, deletePostImage } from "../api/postService.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
     const backBtn = document.querySelector(".back-btn");
@@ -7,10 +7,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     const contentInput = document.getElementById("content");
     const fileInput = document.getElementById("image");
     const fileNameDisplay = document.getElementById("file-name");
-    const writeBtn = document.getElementById("write-btn");
+    const editBtn = document.getElementById("edit-btn");
     const contentHelper = document.getElementById("content-helper");
+    const deleteImgBtn = document.getElementById("delete-img-btn");
     const dropdown = new DropdownMenu();
-    
+
     dropdown.render("dropdown");
 
     const params = new URLSearchParams(window.location.search);
@@ -22,30 +23,44 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     backBtn.addEventListener("click", function () {
-        window.location.href = `viewpost.html?postId=${postId}`; 
+        window.location.href = `viewpost.html?postId=${postId}`;
     });
 
-    const result = await getPostInfo(Number(postId));
-    if (!result.success) {
-        console.error("게시글 데이터를 불러올 수 없습니다.");
-        alert(result.message);
-        return;
+    let postData = null;
+    let selectedFile = null;
+
+    function getOriginalFileName(url) {
+        return url?.split("_")[1] || "";
     }
 
-    let postData = result.data;
+    async function loadPostData() {
+        const result = await getPostInfo(Number(postId));
+        if (!result.success) {
+            alert(result.message);
+            return;
+        }
 
-    // 원본 값 저장
-    const originalTitle = postData.title;
-    const originalContent = postData.content;
+        postData = result.data;
 
-    titleInput.value = originalTitle 
-    contentInput.value = originalContent;
-    fileInput.src = postData.postImg;
-    fileNameDisplay.textContent = postData.postImg ? postData.postImg : "파일을 선택하세요.";
+        titleInput.value = postData.title;
+        contentInput.value = postData.content;
+
+        const fileName = postData.postImgUrl ? getOriginalFileName(postData.postImgUrl) : "파일을 선택하세요.";
+        updateFileNameDisplay(fileName, !!postData.postImgUrl);
+
+        validateForm();
+    }
+
+    function updateFileNameDisplay(fileName, showDelete = false) {
+        fileNameDisplay.textContent = fileName;
+        deleteImgBtn.style.display = showDelete ? "inline" : "none";
+    }
+
+    await loadPostData();
 
     titleInput.addEventListener("input", function () {
         if (this.value.length > 26) {
-            this.value = this.value.slice(0, 26); 
+            this.value = this.value.slice(0, 26);
         }
         validateForm();
     });
@@ -53,7 +68,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     contentInput.addEventListener("input", validateForm);
 
     fileInput.addEventListener("change", function () {
-        fileNameDisplay.textContent = this.files.length > 0 ? this.files[0].name : "파일을 선택하세요.";
+        if (this.files.length > 0) {
+            selectedFile = this.files[0];
+            updateFileNameDisplay(selectedFile.name, false); 
+        } else {
+            selectedFile = null;
+            const fallbackName = postData.postImgUrl ? getOriginalFileName(postData.postImgUrl) : "파일을 선택하세요.";
+            updateFileNameDisplay(fallbackName, !!postData.postImgUrl);
+        }
     });
 
     function validateForm() {
@@ -61,32 +83,29 @@ document.addEventListener("DOMContentLoaded", async function () {
         const isContentFilled = contentInput.value.trim().length > 0;
 
         if (!isTitleFilled || !isContentFilled) {
-            contentHelper.textContent = "제목, 내용을 모두 작성해주세요"; 
+            contentHelper.textContent = "제목, 내용을 모두 작성해주세요";
             contentHelper.classList.add("visible");
+            editBtn.disabled = true;
+            editBtn.style.backgroundColor = "#ACA0EB";
         } else {
-            contentHelper.textContent = ""; 
+            contentHelper.textContent = "";
             contentHelper.classList.remove("visible");
+            editBtn.disabled = false;
+            editBtn.style.backgroundColor = "#7F6AEE";
         }
     }
 
-    // 게시글 수정
-    writeBtn.addEventListener("click", async function (event) {
+    // 게시글 삭제
+    editBtn.addEventListener("click", async function (event) {
         event.preventDefault();
 
         const currentTitle = titleInput.value.trim();
         const currentContent = contentInput.value.trim();
-        const imageFile = fileInput.files[0];
 
         const updateData = {};
-        if (currentTitle !== originalTitle) {
-            updateData.title = currentTitle;
-        }
-        if (currentContent !== originalContent) {
-            updateData.content = currentContent;
-        }
-        if (imageFile) {
-            updateData.imageFile = imageFile;
-        }
+        if (currentTitle !== postData.title) updateData.title = currentTitle;
+        if (currentContent !== postData.content) updateData.content = currentContent;
+        if (selectedFile) updateData.postImage = selectedFile;
 
         if (Object.keys(updateData).length === 0) {
             alert("수정된 내용이 없습니다.");
@@ -97,9 +116,22 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         if (result.success) {
             alert("게시글이 수정되었습니다.");
-            window.location.href = `viewpost.html?postId=${postId}`; 
+            window.location.href = `viewpost.html?postId=${postId}`;
         } else {
-            alert(result.message); 
+            alert(result.message);
+        }
+    });
+
+    // 게시글 이미지 삭제
+    deleteImgBtn.addEventListener("click", async function () {
+        const result = await deletePostImage(postId);
+        if (result.success) {
+            alert("이미지가 삭제되었습니다.");
+            fileInput.value = "";
+            selectedFile = null;
+            await loadPostData();
+        } else {
+            alert(result.message);
         }
     });
 });

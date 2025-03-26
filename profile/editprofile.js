@@ -16,11 +16,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     
     dropdown.render("dropdown");
 
-    let originalNickname = "";
-    let originalProfileImgUrl = "";
     let selectedFile = null; 
+    let userData = null;
 
-     // 프로필 정보 로드
+
+    // 프로필 정보 로드
     async function loadUserProfile() {
         const result = await getProfileInfo();
         if (!result.success) {
@@ -28,19 +28,17 @@ document.addEventListener("DOMContentLoaded", async function () {
             return;
         }
 
-        const user = result.data;
-        emailInput.textContent = user.email;
-        nicknameInput.value = user.nickname;
-        if (user.profileImgUrl && user.profileImgUrl !== "default-profile.png") {
-            profilePreview.src = `${BASE_URL}${user.profileImgUrl}`;
+        userData = result.data;
+        emailInput.textContent = userData.email;
+        nicknameInput.value = userData.nickname;
+        if (userData.profileImgUrl && userData.profileImgUrl !== "default-profile.png") {
+            profilePreview.src = `${BASE_URL}${userData.profileImgUrl}`;
         }
-        originalNickname = user.nickname;
-        originalProfileImgUrl = user.profileImgUrl;
 
         validateForm();
     }
 
-    loadUserProfile();
+    await loadUserProfile();
 
     function showError(id, message) {
         const element = document.getElementById(id);
@@ -66,7 +64,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
         else{
             selectedFile = null;
-            profilePreview.src = `${BASE_URL}${originalProfileImgUrl}`;
+            profilePreview.src = `${BASE_URL}${userData.profileImgUrl}`;
         }
     });
 
@@ -91,7 +89,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         window.getComputedStyle(document.getElementById("nickname-helper")).visibility === "hidden";
         const profileValid = profilePreview.src !== "" && profilePreview.src !== null;
 
-        if ( nicknameValid && profileValid) {
+        if (nicknameValid && profileValid) {
             editButton.disabled = false;
             editButton.style.backgroundColor = "#7F6AEE";
         } else {
@@ -107,7 +105,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         const nickname = nicknameInput.value.trim();
 
         const updateData = {};
-        if (nickname !== originalNickname) updateData.nickname = nickname;
+        if (nickname !== userData.nickname) updateData.nickname = nickname;
         if (selectedFile) updateData.profileImg = selectedFile;
 
         if (Object.keys(updateData).length === 0) {

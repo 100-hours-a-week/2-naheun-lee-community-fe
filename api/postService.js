@@ -28,7 +28,7 @@ export async function createPost(title, content, imageFile) {
 }
 
 // 게시글 수정: (PATCH) /post/{postId}
-export async function updatePost(postId, { title, content, imageFile }) {
+export async function updatePost(postId, { title, content, postImage }) {
     try {
         const data = {};
         if (title !== undefined && title !== null) data.title = title;
@@ -37,8 +37,8 @@ export async function updatePost(postId, { title, content, imageFile }) {
         const formData = new FormData();
         formData.append("data", new Blob([JSON.stringify(data)], { type: "application/json" }));
 
-        if (imageFile) {
-            formData.append("postImage", imageFile);
+        if (postImage) {
+            formData.append("postImage", postImage);
         }
 
         const response = await authFetch(`${BASE_URL}/post/${postId}`, {
@@ -51,6 +51,24 @@ export async function updatePost(postId, { title, content, imageFile }) {
         } else {
             const result = await response.json();
             return { success: false, message: result.message || "게시글 수정 실패" };
+        }
+    } catch (error) {
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
+    }
+}
+
+// 게시글 이미지 삭제: (PATCH) /post/{postId}/image
+export async function deletePostImage(postId) {
+    try {
+        const response = await authFetch(`${BASE_URL}/post/${postId}/image`, {
+            method: "PATCH",
+        });
+
+        if (response.ok) {
+            return { success: true };
+        } else {
+            const result = await response.json();
+            return { success: false, message: result.message || "이미지 삭제 실패" };
         }
     } catch (error) {
         return { success: false, message: "서버와의 연결에 실패했습니다." };

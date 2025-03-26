@@ -63,7 +63,7 @@ header {
     text-align: left;
 }
 
-.post-meta {
+.profile-meta {
     position: relative;
     display: flex;
     align-items: center;
@@ -84,12 +84,12 @@ header {
     right: 0;
 }
 
-.post-img {
+.user-img {
     display: flex;
     align-items: center; 
 }
 
-.post-img img {
+.user-img img {
     width: 25px;
     height: 25px;
     border-radius: 50%;
@@ -111,10 +111,6 @@ header {
 .nickname,
 .date {
     line-height: 25px; /* 이미지 높이에 맞춰줌 */
-}
-
-.post-content p {
-    text-align: left;
 }
 
 .edit-btn, .delete-btn {
@@ -188,26 +184,34 @@ header {
     background-color: #ACA0EB !important;
 }
 
-
 hr {
     margin: 20px 0;
     color:#ccc;
 }
 
+.post-content {
+    padding: 10px;
+}
+
 .post-content img {
-    width: 500px;
-    height: 500px;
+    width: 480px;
+    height: 384px;
     object-fit: cover;
+    margin: 0 auto;
 }
 
 .post-content p {
+    width: 480px;
+    text-align: left;
     margin: 25px 0;
+    word-wrap: break-word;     /* 오래된 브라우저용 */
+    overflow-wrap: break-word; /* 최신 브라우저용 */
 }
 
 .stats {
     display: flex;
     justify-content: space-between;
-    margin:0 70px;
+    margin: 30px 70px 0 ;
 }
 
 .stat-box {

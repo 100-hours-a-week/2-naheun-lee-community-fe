@@ -92,6 +92,7 @@ header {
     border-bottom: 1px solid #ccc;
     box-sizing: border-box;
     background-color: #f5f5f5;
+    resize: none;
 }
 
 .helper-text {
@@ -108,7 +109,7 @@ header {
     visibility: visible; 
 }
 
-#write-btn {
+#edit-btn {
     width: 300px;
     height: 35px;
     padding: 5px;
@@ -121,7 +122,7 @@ header {
     font-size: 14px;
 }
 
-#write-btn:enabled {
+#edit-btn:enabled {
     cursor:pointer;
 }
 
@@ -152,10 +153,25 @@ header {
 }
 
 #file-name {
-    flex: 1;
+    max-width: 200px; 
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    display: inline-block;
     text-align: left;
+    font-size: 16px;
+}
+
+.divider {
+    font-size: 20px; 
+    margin: 0 8px;
+    color: #999; 
+  }
+
+#delete-img-btn {
+    display: none; 
+    cursor: pointer;
+    color: red;
+    font-size: 14px;
+    white-space: nowrap;
+    margin-left: 10px;
 }

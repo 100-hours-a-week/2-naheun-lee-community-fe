@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         const profileImgUrl = isActiveUser ? `${BASE_URL}${postData.user.profileImgUrl}` : `${BASE_URL}/profileuploads/default-profile.png`;
         const nickname = isActiveUser ? postData.user.nickname : "(알 수 없음)";
         document.querySelector('.nickname').innerText = nickname|| "작성자";
-        document.querySelector('.post-img img').src = profileImgUrl || "이미지";
+        document.querySelector('.user-img img').src = profileImgUrl || "이미지";
         document.querySelector('.date').innerText = postData.createdAt;
         const postImgElement = document.querySelector('.post-content img');
         if (postData.postImgUrl) {
