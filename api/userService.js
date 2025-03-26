@@ -63,13 +63,51 @@ export async function signupUser(email, password, nickname, profileImageFile) {
 }
 
 // 프로필 수정: (PATCH) /user/profile
-export async function updateProfile(email, nickname, profileImg) {
-    
+export async function updateProfile({ nickname, profileImg }) {
+    try {
+        const data = {};
+        if (nickname !== undefined && nickname !== null) data.nickname = nickname;
+
+        const formData = new FormData();
+        formData.append("data", new Blob([JSON.stringify(data)], { type: "application/json" }));
+
+        if (profileImg) {
+            formData.append("profileImage", profileImg); 
+        }
+
+        const response = await authFetch("http://localhost:8080/user/profile", {
+            method: "PATCH",
+            body: formData
+        });
+
+        if (response.ok) {
+            return { success: true };
+        } else {
+            const result = await response.json();
+            return { success: false, message: result.message || "프로필 수정 실패" };
+        }
+    } catch (error) {
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
+    }
 }
 
-// 비밀번호 수정: (PATCH) /user/password
+// 비밀번호 변경: (PATCH) /user/password
 export async function updatePassword(newPassword) {
-   
+    try {
+        const response = await authFetch("http://localhost:8080/user/password", {
+            method: "PATCH",
+            body: JSON.stringify({ password: newPassword })
+        });
+
+        if (response.ok) {
+            return { success: true };
+        } else {
+            const result = await response.json();
+            return { success: false, message: result.message || "비밀번호 변경 실패" };
+        }
+    } catch (error) {
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
+    }
 }
 
 // 로그아웃: (POST) /user/logout
@@ -89,11 +127,11 @@ export async function logoutUser() {
         }
     } catch (error) {
         localStorage.removeItem("token");
-        return { success: false, message: "서버 오류로 로그아웃에 실패했습니다." };
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
     }
 }
 
-//회원탈퇴: (DELETE) /user
+// 회원탈퇴: (DELETE) /user
 export function deleteUser() {
     localStorage.removeItem("user");
 }

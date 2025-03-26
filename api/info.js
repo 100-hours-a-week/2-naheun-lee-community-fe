@@ -6,7 +6,6 @@ export function getAuthToken() {
 // 인증된 사용자 요청 형식(헤더에 토큰 포함)
 export async function authFetch(url, options = {}) {
     const token = getAuthToken();
-
     const headers = options.headers || {};
     const isFormData = options.body instanceof FormData;
 
@@ -16,10 +15,14 @@ export async function authFetch(url, options = {}) {
         ...(!isFormData && { "Content-Type": "application/json" }),
     };
 
-    return fetch(url, {
-        ...options,
-        headers: defaultHeaders
-    });
+    try {
+        return await fetch(url, {
+            ...options,
+            headers: defaultHeaders
+        });
+    } catch (error) {
+        throw error;
+    }
 }
 
 // 사용자 정보 가져오기: (GET) /user/profile
