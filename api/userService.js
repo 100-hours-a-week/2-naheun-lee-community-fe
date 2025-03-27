@@ -111,27 +111,6 @@ export async function updatePassword(newPassword) {
     }
 }
 
-// 로그아웃: (POST) /user/logout
-export async function logoutUser() {
-    try {
-        const response = await authFetch(`${BASE_URL}/user/logout`, {
-            method: "POST",
-        });
-
-        localStorage.removeItem("token");
-
-        if (response.ok) {
-            return { success: true };
-        } else {
-            const result = await response.json();
-            return { success: false, message: result.message || "로그아웃 중 오류 발생" };
-        }
-    } catch (error) {
-        localStorage.removeItem("token");
-        return { success: false, message: "서버와의 연결에 실패했습니다." };
-    }
-}
-
 // 회원탈퇴: (DELETE) /user
 export async function deleteUser() {
     try {

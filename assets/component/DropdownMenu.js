@@ -1,8 +1,7 @@
 import { getProfileInfo } from "../../api/info.js"; 
-import { logoutUser } from "../../api/userService.js"; 
 import { BASE_URL } from "../../assets/config/config.js"; 
 
-class DropdownMenu {
+export class DropdownMenu {
     constructor() {}
 
     async render(containerId) {
@@ -92,14 +91,9 @@ class DropdownMenu {
             e.stopPropagation();
         });
 
-        logoutBtn.addEventListener("click", async () => {
-            const result = await logoutUser();
-            if (result.success) {
-                alert("로그아웃되었습니다.");
-                window.location.href = "../auth/login.html";
-            } else {
-                alert(result.message);
-            }
+        logoutBtn.addEventListener("click", () => {
+            localStorage.removeItem("token");
+            window.location.href = "../auth/login.html";
         });
 
         window.addEventListener("click", (e) => {
@@ -109,5 +103,3 @@ class DropdownMenu {
         });
     }
 }
-
-window.DropdownMenu = DropdownMenu;
