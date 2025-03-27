@@ -6,9 +6,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     const postList = document.getElementById("post-list");
     const writeBtn = document.getElementById("write-btn");
     const sentinel = document.getElementById("sentinel");
-    const dropdown = new DropdownMenu();
-    
-    dropdown.render("dropdown");
  
     const observerOptions = {
         root: postList,

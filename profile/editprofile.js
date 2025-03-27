@@ -12,9 +12,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     const loginButton = document.getElementById("login-button");
     const cancelButton = document.getElementById("cancel-btn");
     const confirmButton = document.getElementById("confirm-btn");
-    const dropdown = new DropdownMenu();
-    
-    dropdown.render("dropdown");
 
     let selectedFile = null; 
     let userData = null;

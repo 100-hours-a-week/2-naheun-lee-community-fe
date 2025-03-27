@@ -15,9 +15,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     const commentTextArea = document.getElementById("comment-text");
     const likeBtn = document.getElementById("like-btn");
     const commentBtn = document.getElementById("comment-btn");
-    const dropdown = new DropdownMenu();
-    
-    dropdown.render("dropdown");
 
     const params = new URLSearchParams(window.location.search);
     const postId = params.get("postId");

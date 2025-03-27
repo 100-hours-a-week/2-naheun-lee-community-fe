@@ -1,5 +1,6 @@
 import { getPostInfo } from "../api/info.js";
 import { updatePost, deletePostImage } from "../api/postService.js";
+import { CustomAlert } from "../assets/component/CustomAlert.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
     const backBtn = document.querySelector(".back-btn");
@@ -10,9 +11,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     const editBtn = document.getElementById("edit-btn");
     const contentHelper = document.getElementById("content-helper");
     const deleteImgBtn = document.getElementById("delete-img-btn");
-    const dropdown = new DropdownMenu();
+    const header = document.querySelector("header-component");
 
-    dropdown.render("dropdown");
+    const alertBox = new CustomAlert();
 
     const params = new URLSearchParams(window.location.search);
     const postId = params.get("postId");
@@ -22,9 +23,9 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
     }
 
-    backBtn.addEventListener("click", function () {
-        window.location.href = `viewpost.html?postId=${postId}`;
-    });
+    if (header && postId) {
+        header.setAttribute("back-path", `../community/viewpost.html?postId=${postId}`);
+    }
 
     let postData = null;
     let selectedFile = null;
@@ -108,14 +109,14 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (selectedFile) updateData.postImage = selectedFile;
 
         if (Object.keys(updateData).length === 0) {
-            alert("수정된 내용이 없습니다.");
+            alertBox.show("알림", "수정된 내용이 없습니다.");
             return;
         }
 
         const result = await updatePost(Number(postId), updateData);
 
         if (result.success) {
-            alert("게시글이 수정되었습니다.");
+            alertBox.show("성공", "게시글이 수정되었습니다.");
             window.location.href = `viewpost.html?postId=${postId}`;
         } else {
             alert(result.message);

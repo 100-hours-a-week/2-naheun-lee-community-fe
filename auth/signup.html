@@ -8,11 +8,7 @@
     <link rel="stylesheet" href="signup.css">
 </head>
 <body>
-    <header>
-        <button class="back-btn" onclick="history.back();">&lt;</button>
-        아무 말 대잔치
-    </header>
-
+    <header-component back back-path="login.html"></header-component> 
     <div class="container">
         <div class="signup-wrapper">
             <h2 id="signup-title">회원가입</h2>
@@ -58,6 +54,7 @@
         </div>
     </div>
 
+    <script type="module" src="../assets/component/Header.js"></script>
     <script type="module" src="signup.js"></script>
 </body>
 </html>
