@@ -60,9 +60,9 @@ export class CustomAlert {
       border-top: 1px solid #ccc;
     `;
 
-    const content = document.createElement("p");
-    content.id = "alert-content";
-    content.style.cssText = `
+    const message = document.createElement("p");
+    message.id = "alert-message";
+    message.style.cssText = `
       font-size: 18px;
       margin-bottom: 20px;
     `;
@@ -78,18 +78,23 @@ export class CustomAlert {
       font-size: 16px;
       cursor: pointer;
     `;
-    btn.onclick = () => this.hide();
+
+    btn.onclick = () => {
+      this.hide();
+      if (this.onConfirm) this.onConfirm();  
+    };
 
     header.appendChild(icon);
     header.appendChild(title);
-    box.append(header, divider, content, btn);
+    box.append(header, divider, message, btn);
     this.alertEl.append(box);
     document.body.appendChild(this.alertEl);
   }
 
-  show(content) {
-    document.getElementById("alert-content").textContent = content;
+  show(message, onConfirm = null) {
+    document.getElementById("alert-message").textContent = message;
     this.alertEl.style.display = "flex";
+    this.onConfirm = onConfirm; 
   }
 
   hide() {

@@ -1,28 +1,10 @@
-.container {
-    overflow-y: auto;
-}
-
-.container::-webkit-scrollbar {
-    width: 0px;
-    height: 0px;
-}
-
 .signup-wrapper {
     width: 400px; 
     text-align: center;
-    padding: 10px 0;
 }
 
 #signup-title {
     margin: 10px 0 40px 0;
-}
-
-.highlight {
-    background: linear-gradient(to top, #ACA0EB 15%, transparent 30%);
-    border-radius: 8px;
-    padding: 0 6px;
-    display: inline-block;
-    box-decoration-break: clone;
 }
 
 .profile-upload {

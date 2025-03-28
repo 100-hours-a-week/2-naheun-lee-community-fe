@@ -1,20 +1,10 @@
 .login-wrapper {
     width: 400px; 
-    height: 400px;
-    padding: 10px;
     text-align: center;
 }
 
 #login-title {
     margin: 10px 0 40px 0;
-}
-
-.highlight {
-    background: linear-gradient(to top, #ACA0EB 15%, transparent 30%);
-    border-radius: 8px;
-    padding: 0 6px;
-    display: inline-block;
-    box-decoration-break: clone;
 }
 
 .input-group {

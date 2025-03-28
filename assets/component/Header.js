@@ -1,90 +1,34 @@
-import { DropdownMenu } from "./DropdownMenu.js";
-
-class HeaderComponent extends HTMLElement {
+export class HeaderComponent extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: "open" });
     }
 
-    async connectedCallback() {
+    connectedCallback() {
         const showBackButton = this.getAttribute("back") !== null;
         const showProfile = this.getAttribute("profile") !== null;
         const backPath = this.getAttribute("back-path") || null;
 
-        this.shadowRoot.innerHTML = `
-           <style>
-                .custom-header {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 60px;
-                    background-color: #f5f5f5;
-                    border-bottom: 1px solid black;
-                    z-index: 1000;
-                }
-                .header-container {
-                    max-width: 500px;
-                    margin: 0 auto;
-                    display: grid;
-                    grid-template-columns: 35px 1fr 35px;
-                    align-items: center;
-                    height: 100%;
-                }
-                .header-title {
-                    cursor: pointer;
-                    margin: 0;
-                    text-align: center;
-                    font-weight: normal; 
-                    font-size: 28px;
-                    line-height: 1;
-                }
-                .back-button {
-                    background: none;
-                    border: none;
-                    font-size: 35px;
-                    cursor: pointer;
-                    padding: 0;
-                }
-                .back-button img {
-                    width: 24px;
-                    height: 24px;
-                    object-fit: cover;
-                }
-                #profile-img {
-                    width: 35px;
-                    height: 35px;
-                    border-radius: 50%;
-                    cursor: pointer;
-                    object-fit: cover;
-                }
-                .profile-container {
-                    display: flex;
-                    align-items: center;
-                    justify-content: flex-end;
-                    height: 100%;
-                }    
-                .placeholder {
-                    width: 35px;
-                    height: 35px;
-                }
-            </style>
-            <header class="custom-header">
+        this.innerHTML = `
+            <header class="header-custom">
                 <div class="header-container">
-                    ${
-                        showBackButton
-                        ? `<button class="back-button" id="back-btn">
-                                <img src="/assets/images/backbtn.png" alt="뒤로가기">
-                            </button>`
-                        : `<div class="placeholder"></div>`
+                    ${showBackButton ? `
+                        <button class="header-back-button" id="header-back-btn">
+                            <img src="/assets/images/backbtn.png" alt="뒤로가기">
+                        </button>
+                    ` : `<div class="header-placeholder"></div>`}
+                    
+                    <h1 class="header-title" id="header-title">아무 말 대잔치</h1>
+
+                    ${showProfile ? `
+                        <div class="header-profile-container">
+                            <img id="header-profile-img" alt="프로필 이미지">
+                        </div>` : `<div class="header-placeholder"></div>`
                     }
-                    <h1 class="header-title" id="title">아무 말 대잔치</h1>
-                    ${showProfile ? `<div class="profile-container"><img id="profile-img" alt="프로필 이미지"></div>` : `<div class="placeholder"></div>`}
                 </div>
             </header>
         `;
 
-        const title = this.shadowRoot.getElementById("title");
+        const title = this.querySelector("#header-title");
         title.addEventListener("click", () => {
             const path = window.location.pathname;
             if (!path.includes("login") && !path.includes("signup")) {
@@ -93,18 +37,21 @@ class HeaderComponent extends HTMLElement {
         });
 
         if (showBackButton) {
-            const backBtn = this.shadowRoot.getElementById("back-btn");
+            const backBtn = this.querySelector("#header-back-btn");
             backBtn.addEventListener("click", () => {
                 window.location.href = backPath || document.referrer || "javascript:history.back()";
             });
         }
 
         if (showProfile) {
-            const profileImg = this.shadowRoot.getElementById("profile-img");
-            const dropdown = new DropdownMenu(profileImg, this.shadowRoot);
-            await dropdown.render();
+            const profileImg = this.querySelector("#header-profile-img");
+            import("./DropdownMenu.js").then(module => {
+                const dropdown = new module.DropdownMenu(profileImg, this);
+                dropdown.render();
+            });
         }
     }
 }
 
 customElements.define("header-component", HeaderComponent);
+

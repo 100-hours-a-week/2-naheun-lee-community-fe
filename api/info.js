@@ -7,25 +7,36 @@ export function getAuthToken() {
 
 // 인증된 사용자 요청 형식(헤더에 토큰 포함)
 export async function authFetch(url, options = {}) {
-    const token = getAuthToken();
-    const headers = options.headers || {};
+    const token = localStorage.getItem("token");
     const isFormData = options.body instanceof FormData;
-
-    const defaultHeaders = {
-        ...headers,
-        ...(token && { "Authorization": `Bearer ${token}` }),
-        ...(!isFormData && { "Content-Type": "application/json" }),
+  
+    const headers = {
+      ...(options.headers || {}),
+      ...(token && { Authorization: `Bearer ${token}` }),
+      ...(!isFormData && { "Content-Type": "application/json" }),
     };
-
+  
+    const config = {
+      ...options,
+      headers,
+    };
+  
     try {
-        return await fetch(url, {
-            ...options,
-            headers: defaultHeaders
-        });
+      const response = await fetch(url, config);
+  
+      if (response.status === 401) {
+        alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+        localStorage.removeItem("token");
+        localStorage.removeItem("userId");
+        window.location.href = "/auth/login.html";
+        return;
+      }
+  
+      return response;
     } catch (error) {
-        throw error;
+      console.error("네트워크 오류:", error);
     }
-}
+  }
 
 // 사용자 정보 가져오기: (GET) /user
 export async function getProfileInfo() {

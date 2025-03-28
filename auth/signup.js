@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (result.success) {
                 window.location.href = "login.html";
             } else {
-                alert(result.message);
+                console.log(result.message);
             }
         }
     });

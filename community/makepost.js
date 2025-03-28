@@ -1,4 +1,5 @@
 import { createPost } from "../api/postService.js";
+import { CustomAlert } from "../assets/component/CustomAlert.js";
 
 document.addEventListener("DOMContentLoaded", function () {
     const titleInput = document.getElementById("title");
@@ -7,6 +8,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const fileNameDisplay = document.getElementById("file-name");
     const writeBtn = document.getElementById("write-btn");
     const contentHelper = document.getElementById("content-helper");
+
+    const alertBox = new CustomAlert();
 
     titleInput.addEventListener("input", function () {
         if (this.value.length > 26) {
@@ -50,10 +53,10 @@ document.addEventListener("DOMContentLoaded", function () {
         const result = await createPost(title, content, file);
 
         if (result.success) {
-            alert("게시글이 등록되었습니다.");
+            alertBox.show("게시글이 등록되었습니다.");
             window.location.href = "posts.html"; 
         } else {
-            alert(result.message); 
+            console.log(result.message); 
         }
     });
 });

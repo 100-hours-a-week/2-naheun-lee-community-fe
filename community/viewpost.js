@@ -1,6 +1,7 @@
 import { getPostInfo } from "../api/info.js";
 import { addAPIComment, editAPIComment, deleteAPIComment, addLike, removeLike, deletePost } from "../api/postService.js";
 import { BASE_URL } from "../assets/config/config.js";
+import { Comments } from "./comments.js"; 
 
 document.addEventListener("DOMContentLoaded", async function () {
     const editBtn =  document.getElementById("editbtn");
@@ -32,6 +33,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
 
     let postData = result.data;
+    const currentUserId = localStorage.getItem("userId");
+ 
+    if (Number(currentUserId) !== postData.user.userId) {
+        editBtn.style.display = "none";
+        deletePostBtn.style.display = "none";
+    }
 
     function formatNumber(num) {
         return num >= 100000 ? `${Math.floor(num / 100000)}00k`
@@ -126,7 +133,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 renderPost(); 
             }
         } else {
-            alert(result.message);
+            console.log(result.message);
         }
     });
 
@@ -144,7 +151,7 @@ document.addEventListener("DOMContentLoaded", async function () {
             deleteModal.style.display = "none";
             window.location.href = "posts.html";
         } else {
-            alert(result.message);
+            console.log(result.message);
         }
     });
 
@@ -180,7 +187,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 resetCommentState();
             }
         } else {
-            alert(result.message);
+            console.log(result.message);
         }
     }
 
@@ -198,7 +205,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 resetCommentState();
             }
         } else {
-            alert(result.message);
+            console.log(result.message);
         }
     }
 
@@ -257,8 +264,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 closeDeleteModal2();
             }
         } else {
-            alert(result.message);
+            console(result.message);
         }
     });
-
 });

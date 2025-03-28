@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         posts = result.data;
         renderPosts(posts);  
     } else {
-        alert(result.message);
+        console.log(result.message);
     }
 
     function formatNumber(num) {

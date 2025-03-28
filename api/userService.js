@@ -16,7 +16,9 @@ export async function loginUser(email, password) {
 
         if (response.ok) {
             const token = result.token;
+            const userId = result.userId;
             localStorage.setItem("token", token); 
+            localStorage.setItem("userId", userId); 
             return { success: true };
         } else {
             if (result.message === "Invalid credentials") {
@@ -119,6 +121,7 @@ export async function deleteUser() {
         });
 
         localStorage.removeItem("token");
+        localStorage.removeItem("userId");
 
         if (response.ok) {
             return { success: true };
@@ -128,6 +131,7 @@ export async function deleteUser() {
         }
     } catch (error) {
         localStorage.removeItem("token");
+        localStorage.removeItem("userId");
         return { success: false, message: "서버와의 연결에 실패했습니다." };
     }
 }

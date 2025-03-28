@@ -69,6 +69,7 @@ export class DropdownMenu {
 
         dropdown.querySelector("#logout-btn").addEventListener("click", () => {
             localStorage.removeItem("token");
+            localStorage.removeItem("userId");
             window.location.href = "../auth/login.html";
         });
     }

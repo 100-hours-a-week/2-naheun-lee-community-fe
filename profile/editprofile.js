@@ -126,6 +126,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         if (result.success) {
             showToast("수정 완료");
+            await loadUserProfile();
         } else {
             console.log(result.message);
         }

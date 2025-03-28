@@ -3,7 +3,6 @@ import { updatePost, deletePostImage } from "../api/postService.js";
 import { CustomAlert } from "../assets/component/CustomAlert.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
-    const backBtn = document.querySelector(".back-btn");
     const titleInput = document.getElementById("title");
     const contentInput = document.getElementById("content");
     const fileInput = document.getElementById("image");
@@ -109,17 +108,18 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (selectedFile) updateData.postImage = selectedFile;
 
         if (Object.keys(updateData).length === 0) {
-            alertBox.show("알림", "수정된 내용이 없습니다.");
+            alertBox.show("수정된 내용이 없습니다.");
             return;
         }
 
         const result = await updatePost(Number(postId), updateData);
 
         if (result.success) {
-            alertBox.show("성공", "게시글이 수정되었습니다.");
-            window.location.href = `viewpost.html?postId=${postId}`;
+            alertBox.show("게시글이 수정되었습니다.", () => {
+                window.location.href = `viewpost.html?postId=${postId}`;
+            });
         } else {
-            alert(result.message);
+            console.log(result.message);
         }
     });
 
@@ -127,12 +127,13 @@ document.addEventListener("DOMContentLoaded", async function () {
     deleteImgBtn.addEventListener("click", async function () {
         const result = await deletePostImage(postId);
         if (result.success) {
-            alert("이미지가 삭제되었습니다.");
-            fileInput.value = "";
-            selectedFile = null;
-            await loadPostData();
+            alertBox.show("이미지가 삭제되었습니다.", () => {
+                fileInput.value = "";
+                selectedFile = null;
+                loadPostData();
+            });
         } else {
-            alert(result.message);
+            console.log(result.message);
         }
     });
 });
