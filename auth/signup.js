@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const passwordValid = passwordInput.value && document.getElementById("password-helper").style.visibility === "hidden";
         const confirmPasswordValid = confirmPasswordInput.value === passwordInput.value;
         const nicknameValid = nicknameInput.value.trim() && document.getElementById("nickname-helper").style.visibility === "hidden";
-        const profileValid = profilePreview.src && profilePreview.src !== "default-profile.png";
+        const profileValid = profilePreview.src && profilePreview.src !== "";
 
         if (emailValid && passwordValid && confirmPasswordValid && nicknameValid && profileValid) {
             signupBtn.disabled = false;

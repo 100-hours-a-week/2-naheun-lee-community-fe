@@ -1,6 +1,8 @@
 import { getProfileInfo } from "../api/info.js";
 import { updateProfile, deleteUser } from "../api/userService.js"; 
 import { BASE_URL } from "../assets/config/config.js";
+import { CustomAlert } from "../assets/component/CustomAlert.js";
+
 
 document.addEventListener("DOMContentLoaded", async function () {
     const profilePicInput = document.getElementById("profile-pic");
@@ -8,10 +10,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     const emailInput = document.getElementById("email");
     const nicknameInput = document.getElementById("nickname");
     const editButton = document.getElementById("edit-button");
-    const editIcon = document.getElementById("edit-icon");
     const loginButton = document.getElementById("login-button");
     const cancelButton = document.getElementById("cancel-btn");
     const confirmButton = document.getElementById("confirm-btn");
+
+    const alertBox = new CustomAlert();
 
     let selectedFile = null; 
     let userData = null;
@@ -41,6 +44,15 @@ document.addEventListener("DOMContentLoaded", async function () {
         const element = document.getElementById(id);
         element.textContent = message;
         element.style.visibility = "visible";
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 1000);
     }
 
     function hideError(id) {
@@ -106,17 +118,16 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (selectedFile) updateData.profileImg = selectedFile;
 
         if (Object.keys(updateData).length === 0) {
-            alert("수정된 내용이 없습니다.");
+            alertBox.show("수정된 내용이 없습니다.");
             return;
         }
 
         const result = await updateProfile(updateData);
 
         if (result.success) {
-            alert("프로필 정보가 수정되었습니다.");
-            window.location.href = "../community/posts.html";
+            showToast("수정 완료");
         } else {
-            alert(result.message);
+            console.log(result.message);
         }
     });
 
@@ -139,10 +150,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     
         const result = await deleteUser(); 
         if (result.success) {
-            alert("회원 탈퇴가 완료되었습니다.");
             window.location.href = "../auth/login.html";
         } else {
-            alert(result.message);
+            console.log(result.message);
         }
     });
 });

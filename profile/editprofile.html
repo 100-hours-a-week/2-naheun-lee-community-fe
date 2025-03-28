@@ -24,17 +24,17 @@
             </div>
             <div class="input-group">
                 <label for="email">이메일</label>
-                <div id="email" class="read-only-field"></div>
+                <div id="email" class="read-only-field" autocomplete="off"></div>
             </div>
             <div class="input-group">
                 <label for="nickname">닉네임</label>
-                <input type="text" id="nickname" placeholder="닉네임을 입력하세요">
+                <input type="text" id="nickname" placeholder="닉네임을 입력하세요" autocomplete="off">
                 <p id="nickname-helper" class="helper-text"></p> 
             </div>
             <div id="delete-modal" class="modal">
                 <div class="modal-content">
                     <p class="modal-title">회원탈퇴 하시겠습니까?</p>
-                    <p>작성된 게시글과 댓글을 더 이상 수정/삭제할 수 없습니다.</p>
+                    <p>작성한 게시글과 댓글을 더 이상 수정/삭제할 수 없습니다.</p>
                     <div class="modal-buttons">
                         <button class="modal-btn" id="cancel-btn">취소</button>
                         <button class="modal-btn" id="confirm-btn">확인</button>
@@ -43,6 +43,7 @@
             </div>
             <button id="edit-button" disabled>수정하기</button>
             <div id="login-button" class="login-link">회원탈퇴</div>
+            <div id="toast" class="toast"></div>
         </div>
     </div>
 

@@ -15,6 +15,15 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById(id).style.visibility = "hidden";
     }
 
+    function showToast(message) {
+        const toast = document.getElementById("toast");
+        toast.textContent = message;
+        toast.classList.add("show");
+        setTimeout(() => {
+            toast.classList.remove("show");
+        }, 1000);
+    }
+
     // 비밀번호 유효성 검사
     passwordInput.addEventListener("input", function () {
         const password = passwordInput.value;
@@ -57,10 +66,11 @@ document.addEventListener("DOMContentLoaded", function () {
             const newPassword = passwordInput.value; 
             const result = await updatePassword(newPassword); 
             if (result.success) {
-                alert("비밀번호가 수정되었습니다.")
-                window.location.href = "../community/posts.html"; 
+                showToast("수정 완료");
+                passwordInput.value = "";
+                confirmPasswordInput.value = "";
             } else {
-                alert(result.message);
+                console.log(result.message);
             }
         }
     });

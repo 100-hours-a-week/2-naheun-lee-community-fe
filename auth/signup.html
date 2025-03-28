@@ -11,14 +11,14 @@
     <header-component back back-path="login.html"></header-component> 
     <div class="container">
         <div class="signup-wrapper">
-            <h2 id="signup-title">회원가입</h2>
+            <h2 id="signup-title" class="highlight">회원가입</h2>
 
             <!-- 프로필 사진 업로드 -->
             <div class="profile-upload">
-                <label for="profile-pic" class="profile-label">프로필 사진</label>
+                <label for="profile-pic" class="profile-label">프로필 사진*</label>
                 <p class="helper-text" id="profile-helper"></p>
                 <label for="profile-pic" class="profile-circle" id="profile-circle">
-                    <img src="default-profile.png" alt="" id="profile-preview">
+                    <img  alt="" id="profile-preview">
                     <span id="plus-icon">+</span>
                 </label>
                 <input type="file" id="profile-pic" accept="image/*" hidden>
@@ -28,22 +28,22 @@
             <form id="signupForm">
                 <div class="input-group">
                     <label for="email">이메일*</label>
-                    <input type="email" id="email" placeholder="이메일을 입력하세요">
+                    <input type="email" id="email" placeholder="이메일을 입력하세요" autocomplete="off">
                     <p id="email-helper" class="helper-text"></p> 
                 </div>
                 <div class="input-group">
                     <label for="password">비밀번호*</label>
-                    <input type="password" id="password" placeholder="비밀번호를 입력하세요">
+                    <input type="password" id="password" placeholder="비밀번호를 입력하세요" autocomplete="off">
                     <p id="password-helper" class="helper-text"></p> 
                 </div>
                 <div class="input-group">
                     <label for="confirm-password">비밀번호 확인*</label>
-                    <input type="password" id="confirm-password" placeholder="비밀번호를 한번 더 입력하세요">
+                    <input type="password" id="confirm-password" placeholder="비밀번호를 한번 더 입력하세요" autocomplete="off">
                     <p id="confirm-password-helper" class="helper-text"></p> 
                 </div>
                 <div class="input-group">
                     <label for="nickname">닉네임*</label>
-                    <input type="text" id="nickname" placeholder="닉네임을 입력하세요">
+                    <input type="text" id="nickname" placeholder="닉네임을 입력하세요" autocomplete="off">
                     <p id="nickname-helper" class="helper-text"></p> 
                 </div>
 

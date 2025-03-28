@@ -1,22 +1,28 @@
-.signup-wrapper {
-    width: 400px; 
-    height: 850px;
-    padding: 10px;
-    text-align: center;
+.container {
+    overflow-y: auto;
 }
 
-.back-btn {
-    position: absolute;
-    left: calc((100vw - 500px) / 2);   
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor:pointer;
-    align-items: center;
+.container::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
+.signup-wrapper {
+    width: 400px; 
+    text-align: center;
+    padding: 10px 0;
 }
 
 #signup-title {
     margin: 10px 0 40px 0;
+}
+
+.highlight {
+    background: linear-gradient(to top, #ACA0EB 15%, transparent 30%);
+    border-radius: 8px;
+    padding: 0 6px;
+    display: inline-block;
+    box-decoration-break: clone;
 }
 
 .profile-upload {
@@ -57,6 +63,7 @@
     height: 100%;
     border-radius: 50%;
     display: none; /* 기본 상태에서 숨김 */
+    object-fit: cover;
 }
 
 .profile-circle #plus-icon {
@@ -64,7 +71,6 @@
     color: #000;
     position: absolute;
 }
-
 
 .input-group {
     padding: 5px;
@@ -88,6 +94,11 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
+}
+
+.input-group input:focus {
+    border: 2px solid #7F6AEE;
+    outline: none;
 }
 
 .helper-text {

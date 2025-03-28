@@ -25,7 +25,7 @@ export class DropdownMenu {
                     display: none;
                     position: absolute;
                     right: calc((100vw - 500px) / 2);
-                    top: 60px;
+                    top: 55px;
                     width: 120px;
                     height: 120px;
                     z-index: 9999;
