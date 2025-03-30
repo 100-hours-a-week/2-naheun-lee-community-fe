@@ -50,7 +50,7 @@ export class DropdownMenu {
                 }
             </style>
             <div class="menu-button"><a href="../profile/editprofile.html">회원정보 수정</a></div>
-            <div class="menu-button"><a href="../profile/editpassword.html">비밀번호 수정</a></div>
+            <div class="menu-button"><a href="../profile/editpassword.html">비밀번호 변경</a></div>
             <div class="menu-button" id="logout-btn"><a href="#">로그아웃</a></div>
         `;
 

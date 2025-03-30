@@ -1,8 +1,8 @@
-import { getPostInfo } from "../api/info.js";
-import { addAPIComment, editAPIComment, deleteAPIComment } from "../api/postService.js";
-import { BASE_URL } from "../assets/config/config.js";
+import { getPostInfo } from "../../api/info.js";
+import { addAPIComment, editAPIComment, deleteAPIComment } from "../../api/postService.js";
+import { BASE_URL } from "../config/config.js";
 
-export function initComments(postData, postId, renderPost) {
+export function Comments(postData, postId, renderPost) {
     const commentList = document.getElementById("comments-list");
     const commentTextArea = document.getElementById("comment-text");
     const commentBtn = document.getElementById("comment-btn");
@@ -61,10 +61,11 @@ export function initComments(postData, postId, renderPost) {
             if (updatedResult.success) {
                 postData = updatedResult.data;
                 renderPost();
+                renderComments();
                 resetCommentState();
             }
         } else {
-            alert(result.message);
+            console.log(result.message);
         }
     }
 
@@ -78,10 +79,11 @@ export function initComments(postData, postId, renderPost) {
             if (updatedResult.success) {
                 postData = updatedResult.data;
                 renderPost();
+                renderComments();
                 resetCommentState();
             }
         } else {
-            alert(result.message);
+            console.log(result.message);
         }
     }
 
@@ -92,10 +94,11 @@ export function initComments(postData, postId, renderPost) {
             if (updatedResult.success) {
                 postData = updatedResult.data;
                 renderPost();
+                renderComments();
                 deleteModal2.style.display = "none";
             }
         } else {
-            alert(result.message);
+            console.log(result.message);
         }
     }
 

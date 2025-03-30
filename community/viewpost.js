@@ -1,21 +1,15 @@
 import { getPostInfo } from "../api/info.js";
-import { addAPIComment, editAPIComment, deleteAPIComment, addLike, removeLike, deletePost } from "../api/postService.js";
+import { addLike, removeLike, deletePost } from "../api/postService.js";
 import { BASE_URL } from "../assets/config/config.js";
-import { Comments } from "./comments.js"; 
+import { Comments } from "../assets/component/comments.js"; 
 
 document.addEventListener("DOMContentLoaded", async function () {
     const editBtn =  document.getElementById("editbtn");
     const deletePostBtn = document.getElementById("deletebtn");
     const deleteModal = document.getElementById("delete-modal");
-    const deleteModal2 = document.getElementById("delete-modal2");
     const confirmButton = document.getElementById("confirm-btn");
-    const confirmButton2 = document.getElementById("confirm-btn2");
     const cancelButton = document.getElementById("cancel-btn");
-    const cancelButton2 = document.getElementById("cancel-btn2");
-    const commentList = document.getElementById("comments-list");
-    const commentTextArea = document.getElementById("comment-text");
     const likeBtn = document.getElementById("like-btn");
-    const commentBtn = document.getElementById("comment-btn");
 
     const params = new URLSearchParams(window.location.search);
     const postId = params.get("postId");
@@ -27,8 +21,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     const result = await getPostInfo(Number(postId));
     if (!result.success) {
-        console.error("게시글 데이터를 불러올 수 없습니다.");
-        alert(result.message);
+        console.error(result.message);
         return;
     }
 
@@ -74,39 +67,15 @@ document.addEventListener("DOMContentLoaded", async function () {
         } else {
             likeBtn.classList.remove("liked");
         }
-        renderComments();
     }
     renderPost();
-
-    // 댓글 목록 렌더링
-    function renderComments() {
-        commentList.innerHTML = "";
-        if (postData.comments && postData.commentsCount > 0) {
-            for (const comment of postData.comments) { 
-                const isActiveUser = comment.user.active;
-                const commentImgUrl = isActiveUser ? `${BASE_URL}${comment.user.profileImgUrl}` : `${BASE_URL}/profileuploads/default-profile.png`;
-                const nickname = isActiveUser ? comment.user.nickname : "(알 수 없음)";
-                const commentItem = document.createElement("div");
-                commentItem.classList.add("comment-item");
-                commentItem.setAttribute("data-commentId", comment.commentId);
-                commentItem.innerHTML = `
-                    <div class="comment-meta">
-                        <div class="profile-group">
-                            <span class="comment-img"><img src="${commentImgUrl}" alt="프로필"></span>
-                            <span class="nickname">${nickname}</span>
-                            <span class="date">${comment.createdAt}</span>
-                        </div>
-                        <div class="btn-group">
-                            <button class="edit-btn">수정</button>
-                            <button class="delete-btn">삭제</button>
-                        </div>
-                    </div>
-                    <div class="comment-content">${comment.content}</div>
-                `;
-                commentList.appendChild(commentItem);
-            };
+    Comments(postData, postId, async () => {
+        const updated = await getPostInfo(Number(postId));
+        if (updated.success) {
+            postData = updated.data;
+            renderPost();
         }
-    }
+    });
 
     // 게시글 수정 페이지로 이동
     editBtn.addEventListener('click', function () {
@@ -116,8 +85,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     // 좋아요 추가/취소 처리(이벤트 위임 방식)
     document.body.addEventListener("click", async function (e) {
         const likeBtn = e.target.closest("#like-btn");
-        if (!likeBtn) return; 
-
+        if (!likeBtn) return;
+        
         let result;
 
         if (likeBtn.classList.contains("liked")) {
@@ -152,119 +121,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             window.location.href = "posts.html";
         } else {
             console.log(result.message);
-        }
-    });
-
-    // 댓글 입력 활성화
-    commentTextArea.addEventListener('input', function () {
-        commentBtn.disabled = commentTextArea.value.trim() === "";
-    });
-
-
-    let isEditing = false;
-    let editingCommentId = null;
-
-    // 댓글 버튼 이벤트
-    commentBtn.addEventListener("click", async function () {
-        if (isEditing) {
-            await updateComment();
-        } else {
-            await addComment();
-        }
-    });
-
-    // 댓글 등록 함수
-    async function addComment() {
-        const text = commentTextArea.value.trim();
-        if (text === "") return;
-    
-        const result = await addAPIComment(Number(postId), text);
-        if (result.success) {
-            const updatedResult = await getPostInfo(Number(postId));
-            if (updatedResult.success) {
-                postData = updatedResult.data;
-                renderPost(); 
-                resetCommentState();
-            }
-        } else {
-            console.log(result.message);
-        }
-    }
-
-    // 댓글 수정 함수
-    async function updateComment() {
-        const newText = commentTextArea.value.trim();
-        if (newText === "" || editingCommentId === null) return;
-    
-        const result = await editAPIComment(Number(postId), editingCommentId, newText);
-        if (result.success) {
-            const updatedResult = await getPostInfo(Number(postId));
-            if (updatedResult.success) {
-                postData = updatedResult.data;
-                renderPost();
-                resetCommentState();
-            }
-        } else {
-            console.log(result.message);
-        }
-    }
-
-    // 댓글 수정/삭제 이벤트
-    commentList.addEventListener("click", function (e) {
-        const target = e.target;
-        const commentItem = target.closest(".comment-item");
-        if (!commentItem) return;
-        const commentId = Number(commentItem.getAttribute("data-commentId"));
-
-        if (target.classList.contains("edit-btn")) {
-            const commentTextElement = commentItem.querySelector(".comment-content");
-            commentTextArea.value = commentTextElement.innerText;
-
-            isEditing = true;
-            editingCommentId = commentId;
-            commentBtn.innerText = "댓글 수정";
-            commentBtn.disabled = false;
-
-        } else if (target.classList.contains("delete-btn")) {
-            openDeleteModal2(commentId);
-        }
-    });
-
-    // 댓글 상태 초기화 함수
-    function resetCommentState() {
-        isEditing = false;
-        editingCommentId = null;
-        commentTextArea.value = "";
-        commentBtn.innerText = "댓글 등록";
-        commentBtn.disabled = true;
-    }
-
-    // 댓글 삭제 모달 
-    let selectedCommentId = null;
-    function openDeleteModal2(commentId) {
-        selectedCommentId = commentId;
-        deleteModal2.style.display = "flex";
-    }
-    function closeDeleteModal2() {
-        deleteModal2.style.display = "none";
-        selectedCommentId = null;
-    }
-    cancelButton2.addEventListener("click", function () {
-        closeDeleteModal2();
-    });
-    confirmButton2.addEventListener("click", async function () {
-        if (!selectedCommentId) return;
-    
-        const result = await deleteAPIComment(Number(postId), selectedCommentId);
-        if (result.success) {
-            const updatedResult = await getPostInfo(Number(postId));
-            if (updatedResult.success) {
-                postData = updatedResult.data;
-                renderPost();
-                closeDeleteModal2();
-            }
-        } else {
-            console(result.message);
         }
     });
 });
