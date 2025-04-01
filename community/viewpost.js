@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     });
 
-    // 게시글 수정 페이지로 이동
+    // 수정 버튼 이벤트 처리
     editBtn.addEventListener('click', function () {
         window.location.href = "editpost.html?postId=" + postId;
     });
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     document.body.addEventListener("click", async function (e) {
         const likeBtn = e.target.closest("#like-btn");
         if (!likeBtn) return;
-        
+
         let result;
 
         if (likeBtn.classList.contains("liked")) {

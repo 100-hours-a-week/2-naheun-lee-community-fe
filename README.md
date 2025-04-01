@@ -1,8 +1,29 @@
 # 2-naheun-lee-community-fe
-### 📌 프로젝트 개요
+### 📝 프로젝트 소개
+자신의 하루 일상을 공유하기  
+
+<br/> 
+<br/> 
+
+### ⚙ 기술 스택
+<div>
+<img src="https://github.com/yewon-Noh/readme-template/blob/main/skills/HTMLCSS.png?raw=true" width="80">
+<img src="https://github.com/yewon-Noh/readme-template/blob/main/skills/JavaScript.png?raw=true" width="80">
+</div>
 
 
-게시판에 글을 등록하고 다른 사용자의 글을 볼 수 있는 커뮤니티 만들기  
+<br/> 
+<br/> 
+
+### 개발 인원 및 기간
+- 개발 기간 : 2024-02-21 ~ 2024-03-30
+- 개발 인원 : 프론트엔드/백엔드 1명
+
+<br/> 
+<br/> 
+
+### 🔗 Backend 링크
+- https://github.com/100-hours-a-week/2-naheun-lee-community-be
 
 <br/> 
 <br/> 
@@ -12,21 +33,16 @@
 
 ```html
 2-NAHEUN-LEE-COMMUNITY-FE/
-│── api/✅
+│── api/
 │   │── info.js
 │   │── postService.js
 │   └── userService.js
 │
 │── assets/
 │   │── component/
-│   │   └── DropdownMenu.js
+│   │── config/
 │   │── fonts/
-│   │   └── SUIT-Regular.woff2✅
-│   └── image/✅
-│       │── content.svg(게시글 내용 예시)
-│       │── testuser1.png
-│       │── testuser2.png
-│       └── testuser3.png
+│   └── images/
 │
 │── auth/
 │   │── login.css
@@ -50,10 +66,6 @@
 │   │── viewpost.html
 │   └── viewpost.js
 │
-│── data/✅
-│   │── users.json
-│   └── posts.json
-│
 │── profile/  
 │   │── editpassword.css
 │   │── editpassword.html
@@ -62,53 +74,23 @@
 │   │── editprofile.html
 │   └── editprofile.js
 │
-│── index.css✅
+│── header.css
+│── index.css
 └── README.md
 ```
-✅: 4주차 과제에 새로 추가된 부분
-
-- api: 서버 역할
-- DropdownMenu: 드롭다운 메뉴 컴포넌트
-- auth: 로그인/회원가입 처리
-- community: 게시판 기능 수행
-- profile: 회원 정보 수정  
 
 <br/> 
 <br/> 
 
 ### ✏️ 프로젝트 주요 기능
 
-
-- **로그인 (login.html)**
-    - 이메일, 비밀번호 유효성 검사
-    - 회원가입 페이지로 이동
-    - 로그인
-- **회원가입 (signup.html)**
-    - 이메일, 비밀번호, 닉네임, 프로필 사진 유효성 검사
-    - 로그인 페이지로 이동
-    - 회원가입
-- **게시판 (posts.html)**
-    - 게시글 리스트 인피니티 스크롤
-    - 게시글 작성 페이지로 이동
-    - 각 게시글 조회 페이지로 이동
-- **게시글 조회 (viewpost.html)**
-    - 게시글 수정 페이지로 이동
-    - 게시글 삭제
-    - 좋아요 누르기
+- **로그인**
+- **회원가입**
+- **게시판**
+- **게시글 조회**
     - 좋아요수, 조회수, 댓글 확인 가능
     - 댓글 등록/수정/삭제
-- **게시글 수정 (editpost.html)**
-    - 제목, 내용, 이미지 수정 가능
-    - 게시글 조회 페이지로 이동
-- **게시글 작성 (makepost.html)**
-    - 새로운 게시글 등록
-- **드롭다운**
-    - 로그인/회원가입 페이지를 제외한 나머지 페이지의 오른쪽 상단에 프로필을 누르면 드롭다운 메뉴가 보여진다.
-    - 각 메뉴마다 회원정보 수정, 비밀번호 수정 페이지로 이동할 수 있고 로그아웃 할 수 있다.
-- **회원정보 수정(editprofile.html)**
-    - 이메일, 닉네임, 프로필 사진 수정
-    - 완료되면 게시판 페이지로 이동
-    - 회원 탈퇴
-- **비밀번호 수정(editpassword.html)**
-    - 비밀번호 수정
-    - 완료되면 게시판 페이지로 이동
+- **게시글 수정**
+- **게시글 작성**
+- **회원정보 수정**
+- **비밀번호 변경**
