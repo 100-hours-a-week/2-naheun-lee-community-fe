@@ -19,10 +19,55 @@ document.addEventListener("DOMContentLoaded", function () {
     const nicknameInput = document.getElementById("nickname");
     const signupBtn = document.getElementById("signup-btn");
     const plusIcon = document.getElementById("plus-icon");
-
     const alertBox = new CustomAlert();
 
-    // [이벤트 처리] 프로필 이미지 업로드
+    // [UI 처리] 회원가입 버튼 활성화
+    function updateButtonState() {
+        const emailValid = !validateEmail(emailInput);
+        const passwordValid = !validatePassword(passwordInput.value);
+        const confirmPasswordValid = !validateConfirmPassword(passwordInput.value, confirmPasswordInput.value);
+        const nicknameValid = !validateNickname(nicknameInput.value);
+        const profileValid = profilePreview.src && profilePreview.src !== "";
+        
+        const isValid = emailValid && passwordValid && confirmPasswordValid && nicknameValid && profileValid;
+        signupBtn.disabled = !isValid;
+        signupBtn.style.backgroundColor = isValid ? "#7F6AEE" : "#ACA0EB";
+    }
+
+    // [이벤트 처리] 입력 유효성 검사
+    emailInput.addEventListener("input", function () {
+        const msg = validateEmail(emailInput);
+        if (msg) showHelper("email-helper", msg);
+        else hideHelper("email-helper");
+        updateButtonState();
+    });
+
+    passwordInput.addEventListener("input", function () {
+        const msg = validatePassword(passwordInput.value);
+        if (msg) showHelper("password-helper", msg);
+        else hideHelper("password-helper");
+        updateButtonState();
+    });
+
+    ["paste", "copy", "cut", "contextmenu"].forEach(eventName => { // 비밀번호 확인은 복사, 붙여넣기 금지
+        confirmPasswordInput.addEventListener(eventName, e => e.preventDefault());
+    });
+    
+    confirmPasswordInput.addEventListener("input", function () {
+        const msg = validateConfirmPassword(passwordInput.value, confirmPasswordInput.value);
+        if (msg) showHelper("confirm-password-helper", msg);
+        else hideHelper("confirm-password-helper");
+        updateButtonState();
+    });
+
+    nicknameInput.addEventListener("input", function () {
+        const msg = validateNickname(nicknameInput.value);
+        if (msg) showHelper("nickname-helper", msg);
+        else hideHelper("nickname-helper");
+        updateButtonState();
+    });
+
+    // [이벤트 처리] 파일 업로드
     profilePicInput.addEventListener("change", function(event) {
         const file = event.target.files[0];
         if (file) {
@@ -44,35 +89,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // [이벤트 처리] 유효성 검사 핸들러
-    emailInput.addEventListener("input", function () {
-        const msg = validateEmail(emailInput);
-        if (msg) showHelper("email-helper", msg);
-        else hideHelper("email-helper");
-        updateButtonState();
-    });
-    passwordInput.addEventListener("input", function () {
-        const msg = validatePassword(passwordInput.value);
-        if (msg) showHelper("password-helper", msg);
-        else hideHelper("password-helper");
-        updateButtonState();
-    });
-    ["paste", "copy", "cut", "contextmenu"].forEach(eventName => { // 비밀번호 확인은 복사, 붙여넣기 금지
-        confirmPasswordInput.addEventListener(eventName, e => e.preventDefault());
-    });
-    confirmPasswordInput.addEventListener("input", function () {
-        const msg = validateConfirmPassword(passwordInput.value, confirmPasswordInput.value);
-        if (msg) showHelper("confirm-password-helper", msg);
-        else hideHelper("confirm-password-helper");
-        updateButtonState();
-    });
-    nicknameInput.addEventListener("input", function () {
-        const msg = validateNickname(nicknameInput.value);
-        if (msg) showHelper("nickname-helper", msg);
-        else hideHelper("nickname-helper");
-        updateButtonState();
-    });
-
      // [이벤트 처리] 회원가입 버튼 클릭
      signupBtn.addEventListener("click", async function (event) { 
         event.preventDefault();
@@ -92,17 +108,4 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
-
-    // [UI 처리] 회원가입 버튼 활성화
-    function updateButtonState() {
-        const emailValid = !validateEmail(emailInput);
-        const passwordValid = !validatePassword(passwordInput.value);
-        const confirmPasswordValid = !validateConfirmPassword(passwordInput.value, confirmPasswordInput.value);
-        const nicknameValid = !validateNickname(nicknameInput.value);
-        const profileValid = profilePreview.src && profilePreview.src !== "";
-        
-        const isValid = emailValid && passwordValid && confirmPasswordValid && nicknameValid && profileValid;
-        signupBtn.disabled = !isValid;
-        signupBtn.style.backgroundColor = isValid ? "#7F6AEE" : "#ACA0EB";
-    }
 });

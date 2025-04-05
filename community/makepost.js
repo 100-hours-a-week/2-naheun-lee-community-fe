@@ -8,23 +8,10 @@ document.addEventListener("DOMContentLoaded", function () {
     const fileNameDisplay = document.getElementById("file-name");
     const writeBtn = document.getElementById("write-btn");
     const contentHelper = document.getElementById("content-helper");
-
     const alertBox = new CustomAlert();
 
-    titleInput.addEventListener("input", function () {
-        if (this.value.length > 26) {
-            this.value = this.value.slice(0, 26); 
-        }
-        validateForm();
-    });
-
-    contentInput.addEventListener("input", validateForm);
-
-    fileInput.addEventListener("change", function () {
-        fileNameDisplay.textContent = this.files.length > 0 ? this.files[0].name : "파일을 선택하세요.";
-    });
-
-    function validateForm() {
+    // [UI 처리] 완료 버튼 활성화
+    function updateButtonState() {
         const isTitleFilled = titleInput.value.trim().length > 0;
         const isContentFilled = contentInput.value.trim().length > 0;
 
@@ -41,7 +28,22 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // 게시글 등록
+    // [이벤트 처리] 입력 유효성 검사
+    titleInput.addEventListener("input", function () {
+        if (this.value.length > 26) {
+            this.value = this.value.slice(0, 26); 
+        }
+        updateButtonState();
+    });
+    
+    contentInput.addEventListener("input", updateButtonState);
+
+    // [이벤트 처리] 파일 업로드
+    fileInput.addEventListener("change", function () {
+        fileNameDisplay.textContent = this.files.length > 0 ? this.files[0].name : "파일을 선택하세요.";
+    });
+
+    // [이벤트 처리] 완료 버튼 클릭
     writeBtn.addEventListener("click", async function (event) {
         event.preventDefault(); 
 

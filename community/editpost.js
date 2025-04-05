@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     const contentHelper = document.getElementById("content-helper");
     const deleteImgBtn = document.getElementById("delete-img-btn");
     const header = document.querySelector("header-component");
-
     const alertBox = new CustomAlert();
 
     const params = new URLSearchParams(window.location.search);
@@ -22,17 +21,21 @@ document.addEventListener("DOMContentLoaded", async function () {
         return;
     }
 
+    let postData = null;
+    let selectedFile = null;
+
     if (header && postId) {
         header.setAttribute("back-path", `../community/viewpost.html?postId=${postId}`);
     }
 
-    let postData = null;
-    let selectedFile = null;
+    const getOriginalFileName = url => url?.split("_")[1] || "";
 
-    function getOriginalFileName(url) {
-        return url?.split("_")[1] || "";
+    function updateFileNameDisplay(fileName, showDelete = false) {
+        fileNameDisplay.textContent = fileName;
+        deleteImgBtn.style.display = showDelete ? "inline" : "none";
     }
 
+    // [데이터 처리] 게시글 데이터 불러오기
     async function loadPostData() {
         const result = await getPostInfo(Number(postId));
         if (!result.success) {
@@ -41,32 +44,40 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         postData = result.data;
-
         titleInput.value = postData.title;
         contentInput.value = postData.content;
 
         const fileName = postData.postImgUrl ? getOriginalFileName(postData.postImgUrl) : "파일을 선택하세요.";
         updateFileNameDisplay(fileName, !!postData.postImgUrl);
 
-        validateForm();
-    }
-
-    function updateFileNameDisplay(fileName, showDelete = false) {
-        fileNameDisplay.textContent = fileName;
-        deleteImgBtn.style.display = showDelete ? "inline" : "none";
+        updateButtonState();
     }
 
     await loadPostData();
 
+    // [UI 처리] 수정 버튼 활성화
+    function updateButtonState() {
+        const isTitleFilled = titleInput.value.trim().length > 0;
+        const isContentFilled = contentInput.value.trim().length > 0;
+
+        const isValid = isTitleFilled && isContentFilled;
+        contentHelper.textContent = isValid ? "" : "제목, 내용을 모두 작성해주세요";
+        contentHelper.classList.toggle("visible", !isValid);
+        editBtn.disabled = !isValid;
+        editBtn.style.backgroundColor = isValid ? "#7F6AEE" : "#ACA0EB";
+    }
+
+    // [이벤트 처리] 입력 유효성 검사
     titleInput.addEventListener("input", function () {
         if (this.value.length > 26) {
             this.value = this.value.slice(0, 26);
         }
-        validateForm();
+        updateButtonState();
     });
+    
+    contentInput.addEventListener("input", updateButtonState);
 
-    contentInput.addEventListener("input", validateForm);
-
+    // [이벤트 처리] 파일 업로드
     fileInput.addEventListener("change", function () {
         if (this.files.length > 0) {
             selectedFile = this.files[0];
@@ -78,24 +89,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     });
 
-    function validateForm() {
-        const isTitleFilled = titleInput.value.trim().length > 0;
-        const isContentFilled = contentInput.value.trim().length > 0;
-
-        if (!isTitleFilled || !isContentFilled) {
-            contentHelper.textContent = "제목, 내용을 모두 작성해주세요";
-            contentHelper.classList.add("visible");
-            editBtn.disabled = true;
-            editBtn.style.backgroundColor = "#ACA0EB";
-        } else {
-            contentHelper.textContent = "";
-            contentHelper.classList.remove("visible");
-            editBtn.disabled = false;
-            editBtn.style.backgroundColor = "#7F6AEE";
-        }
-    }
-
-    // 게시글 삭제
+    // [이벤트 처리] 수정 버튼 클릭
     editBtn.addEventListener("click", async function (event) {
         event.preventDefault();
 
@@ -123,7 +117,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     });
 
-    // 게시글 이미지 삭제
+    // [이벤트 처리] 이미지 삭제 클릭
     deleteImgBtn.addEventListener("click", async function () {
         const result = await deletePostImage(postId);
         if (result.success) {

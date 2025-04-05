@@ -2,7 +2,11 @@ import { getProfileInfo } from "../api/info.js";
 import { updateProfile, deleteUser } from "../api/userService.js"; 
 import { BASE_URL } from "../config/config.js";
 import { CustomAlert } from "../assets/component/CustomAlert.js";
-
+import {
+    validateNickname,
+    showHelper,
+    hideHelper
+} from "../utils/validation.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
     const profilePicInput = document.getElementById("profile-pic");
@@ -13,14 +17,12 @@ document.addEventListener("DOMContentLoaded", async function () {
     const loginButton = document.getElementById("login-button");
     const cancelButton = document.getElementById("cancel-btn");
     const confirmButton = document.getElementById("confirm-btn");
-
     const alertBox = new CustomAlert();
 
     let selectedFile = null; 
     let userData = null;
 
-
-    // 프로필 정보 로드
+    // [데이터 처리] 프로필 정보 불러오기
     async function loadUserProfile() {
         const result = await getProfileInfo();
         if (!result.success) {
@@ -34,18 +36,12 @@ document.addEventListener("DOMContentLoaded", async function () {
         if (userData.profileImgUrl && userData.profileImgUrl !== "default-profile.png") {
             profilePreview.src = `${BASE_URL}${userData.profileImgUrl}`;
         }
-
-        validateForm();
+        updateButtonState();
     }
 
     await loadUserProfile();
 
-    function showError(id, message) {
-        const element = document.getElementById(id);
-        element.textContent = message;
-        element.style.visibility = "visible";
-    }
-
+    // [UI 처리] 토스트 메시지
     function showToast(message) {
         const toast = document.getElementById("toast");
         toast.textContent = message;
@@ -55,62 +51,41 @@ document.addEventListener("DOMContentLoaded", async function () {
         }, 1000);
     }
 
-    function hideError(id) {
-        document.getElementById(id).style.visibility = "hidden";
-    }
+    // [UI 처리] 버튼 상태 업데이트
+    function updateButtonState() {
+        const nicknameValid = !validateNickname(nicknameInput.value);
+        const profileValid = profilePreview.src !== "" && profilePreview.src !== null;
 
-    // 프로필 사진 업로드
+        const isValid = nicknameValid && profileValid;
+        editButton.disabled = !isValid;
+        editButton.style.backgroundColor = isValid ? "#7F6AEE" : "#ACA0EB";
+    };
+
+    // [이벤트 처리] 입력 유효성 검사
+    nicknameInput.addEventListener("input", function () {
+        const msg = validateNickname(nicknameInput.value);
+        msg ? showHelper("nickname-helper", msg) : hideHelper("nickname-helper");
+        updateButtonState();
+    });
+
+    // [이벤트 처리] 파일 업로드
     profilePicInput.addEventListener("change", function(event) {
         const file = event.target.files[0];
         if (file) {
             selectedFile = file; 
             const reader = new FileReader();
-            reader.onload = function(e) {
-                profilePreview.src = e.target.result;
-            };
+            reader.onload = e => profilePreview.src = e.target.result;
             reader.readAsDataURL(file);
-            validateForm();
-        }
-        else{
+        } else {
             selectedFile = null;
             profilePreview.src = `${BASE_URL}${userData.profileImgUrl}`;
         }
+        updateButtonState();
     });
 
-    // 닉네임 유효성 검사
-    nicknameInput.addEventListener("input", function () {
-        const nickname = nicknameInput.value.trim();
-        if (!nickname) {
-            showError("nickname-helper", "닉네임을 입력해주세요.");
-        } else if (nickname.includes(" ")) {
-            showError("nickname-helper", "띄어쓰기를 없애주세요.");
-        } else if (nickname.length > 10) {
-            showError("nickname-helper", "닉네임은 최대 10자까지 작성 가능합니다.");
-        } else {
-            hideError("nickname-helper");
-        }
-        validateForm();
-    });
-
-    // 폼 유효성 검사 및 버튼 활성화
-    function validateForm() {
-        const nicknameValid = nicknameInput.value.trim().length > 0 && 
-        window.getComputedStyle(document.getElementById("nickname-helper")).visibility === "hidden";
-        const profileValid = profilePreview.src !== "" && profilePreview.src !== null;
-
-        if (nicknameValid && profileValid) {
-            editButton.disabled = false;
-            editButton.style.backgroundColor = "#7F6AEE";
-        } else {
-            editButton.disabled = true;
-            editButton.style.backgroundColor = "#ACA0EB";
-        }
-    }
-
-    // 프로필 정보 수정 이벤트
+    // [이벤트 처리] 수정 버튼 클릭
     editButton.addEventListener("click", async function (event) { 
         event.preventDefault();
-
         const nickname = nicknameInput.value.trim();
 
         const updateData = {};
@@ -123,7 +98,6 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
 
         const result = await updateProfile(updateData);
-
         if (result.success) {
             showToast("수정 완료");
             await loadUserProfile();
@@ -132,7 +106,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     });
 
-    // 회원 탈퇴 모달    
+    // [이벤트 처리] 회원탈퇴 클릭
     function openDeleteModal() {
         document.getElementById('delete-modal').style.display = 'flex';
     }

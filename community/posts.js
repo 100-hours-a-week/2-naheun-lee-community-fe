@@ -6,18 +6,19 @@ document.addEventListener("DOMContentLoaded", async function () {
     const postList = document.getElementById("post-list");
     const writeBtn = document.getElementById("write-btn");
     const sentinel = document.getElementById("sentinel");
- 
-    const observerOptions = {
-        root: postList,
-        rootMargin: "100px",
-        threshold: 0.1
-    };
 
     let posts = [];
-    const result = await getPostsInfo();
-
     let visiblePosts = 0;
-
+    
+    function formatNumber(num) {
+        return num >= 100000 ? `${Math.floor(num / 100000)}00k`
+            : num >= 10000 ? `${Math.floor(num / 1000)}k`
+            : num >= 1000 ? `${(num / 1000).toFixed(1)}k`
+            : num;
+    }
+    
+    // [데이터 처리] 게시글 목록 데이터 불러오기
+    const result = await getPostsInfo();
     if (result.success) {
         posts = result.data;
         renderPosts(posts);  
@@ -25,29 +26,19 @@ document.addEventListener("DOMContentLoaded", async function () {
         console.log(result.message);
     }
 
-    function formatNumber(num) {
-        return num >= 100000 ? `${Math.floor(num / 100000)}00k`
-            : num >= 10000 ? `${Math.floor(num / 1000)}k`
-            : num >= 1000 ? `${(num / 1000).toFixed(1)}k`
-            : num;
-    }
-
-    function truncateTitle(title, maxLength = 26) {
-        return title.length > maxLength ? title.substring(0, maxLength) : title;
-    }
-
+    // [UI 처리] 게시글 목록 렌더링
     async function renderPosts() {
         while (visiblePosts < posts.length) {
             const post = posts[visiblePosts];
 
             const isActiveUser = post.user.active;
-            const profileImgSrc = isActiveUser ? `${BASE_URL}${post.user.profileImgUrl}`: `${BASE_URL}/profileuploads/default-profile.png`;
             const nickname = isActiveUser ? post.user.nickname : "(알 수 없음)";
+            const profileImgSrc = `${BASE_URL}${isActiveUser ? post.user.profileImgUrl : "/profileuploads/default-profile.png"}`;
 
             const postCard = document.createElement("div");
             postCard.classList.add("post-card");
             postCard.innerHTML = `
-                <div class="post-title">${truncateTitle(post.title)}</div>
+                <div class="post-title">${post.title}</div>
                 <div class="post-info">
                     <span class="info-style">좋아요 ${formatNumber(post.likesCount)}</span>
                     <span class="info-style">댓글 ${formatNumber(post.commentsCount)}</span>
@@ -72,17 +63,21 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     }
 
-    function loadMorePosts(entries) {
+    // [이벤트 처리] 무한 스크롤
+    const observerOptions = {
+        root: postList,
+        rootMargin: "100px",
+        threshold: 0.1
+    };
+    
+    const observer = new IntersectionObserver(entries => {
         if (entries[0].isIntersecting) {
             renderPosts();
         }
-    }
-
-    const observer = new IntersectionObserver(loadMorePosts, observerOptions);
+    }, observerOptions);
     observer.observe(sentinel);
 
-    renderPosts();
-
+    // [이벤트 처리] 게시글 작성 버튼 클릭
     writeBtn.addEventListener("click", function () {
         window.location.href = "makepost.html";
     });

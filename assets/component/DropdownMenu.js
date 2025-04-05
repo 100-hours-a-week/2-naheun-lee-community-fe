@@ -1,5 +1,5 @@
 import { getProfileInfo } from "../../api/info.js";
-import { BASE_URL } from "../../assets/config/config.js";
+import { BASE_URL } from "../../config/config.js";
 
 export class DropdownMenu {
     constructor(profileImg, root) {

@@ -14,12 +14,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const alertBox = new CustomAlert();
 
-    // [이벤트 처리] 유효성 검사 핸들러
+    // [UI 처리] 로그인 버튼 활성화
+    function updateButtonState() {
+        const emailValid = !validateEmail(emailInput);
+        const passwordValid = !validatePassword(passwordInput.value);
+
+        const isValid = emailValid && passwordValid;
+        loginButton.disabled = !isValid;
+        loginButton.style.backgroundColor = isValid ? "#7F6AEE" : "#ACA0EB";
+    }
+
+    // [이벤트 처리] 입력 유효성 검사
     emailInput.addEventListener("input", function () {
         const msg = validateEmail(emailInput);
         msg ? showHelper("email-helper", msg) : hideHelper("email-helper");
         updateButtonState();
     });
+    
     passwordInput.addEventListener("input", function () {
         const msg = validatePassword(passwordInput.value);
         msg ? showHelper("password-helper", msg) : hideHelper("password-helper");
@@ -42,15 +53,5 @@ document.addEventListener("DOMContentLoaded", function () {
             console.log(result.message); 
         }
     });
-
-     // [UI 처리] 로그인 버튼 활성화
-    function updateButtonState() {
-        const emailValid = !validateEmail(emailInput);
-        const passwordValid = !validatePassword(passwordInput.value);
-
-        const isValid = emailValid && passwordValid;
-        loginButton.disabled = !isValid;
-        loginButton.style.backgroundColor = isValid ? "#7F6AEE" : "#ACA0EB";
-    }
 });
 
