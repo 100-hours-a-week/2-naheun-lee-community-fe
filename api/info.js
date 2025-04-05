@@ -1,4 +1,4 @@
-import { BASE_URL } from "../assets/config/config.js";
+import { BASE_URL } from "../config/config.js";
 
 // 현재 로그인된 사용자 정보 
 export function getAuthToken() {
@@ -34,7 +34,7 @@ export async function authFetch(url, options = {}) {
   
       return response;
     } catch (error) {
-      console.error("네트워크 오류:", error);
+        console.error("네트워크 오류:", error);
     }
 }
 
@@ -45,24 +45,15 @@ export async function getProfileInfo() {
             method: "GET"
         });
 
+        const result = await response.json();
+
         if (response.ok) {
-            const result = await response.json();
-            return {
-                success: true,
-                data: result.data
-            };
+            return { success: true, data: result.data };
         } else {
-            const result = await response.json();
-            return {
-                success: false,
-                message: result.message || "회원 정보를 가져올 수 없습니다."
-            };
+            return { success: false, message: result.message || "회원 정보를 가져올 수 없습니다." };
         }
     } catch (error) {
-        return {
-            success: false,
-            message: "서버와의 연결에 실패했습니다."
-        };
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
     }
 }
 
@@ -73,24 +64,15 @@ export async function getPostsInfo() {
             method: "GET",
         });
 
+        const result = await response.json();
+
         if (response.ok) {
-            const result = await response.json();
-            return {
-                success: true,
-                data: result.data  
-            };
+            return { success: true, data: result.data };
         } else {
-            const result = await response.json();
-            return {
-                success: false,
-                message: result.message || "게시글을 가져오는 데 실패했습니다."
-            };
+            return { success: false, message: result.message || "게시글을 가져오는 데 실패했습니다." };
         }
     } catch (error) {
-        return {
-            success: false,
-            message: "서버와의 연결에 실패했습니다."
-        };
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
     }
 }
 
@@ -101,24 +83,14 @@ export async function getPostInfo(postId) {
             method: "GET"
         });
 
+        const result = await response.json();
+
         if (response.ok) {
-            const result = await response.json();
-            return {
-                success: true,
-                data: result.data 
-            };
+            return { success: true, data: result.data };
         } else {
-            const result = await response.json();
-            return {
-                success: false,
-                message: result.message || "게시글을 가져오는 데 실패했습니다."
-            };
+            return { success: false, message: result.message || "게시글을 가져오는 데 실패했습니다." };
         }
     } catch (error) {
-        console.error("게시글 정보를 가져오는 중 오류 발생:", error);
-        return {
-            success: false,
-            message: "서버와의 연결에 실패했습니다."
-        };
+        return { success: false, message: "서버와의 연결에 실패했습니다." };
     }
 }

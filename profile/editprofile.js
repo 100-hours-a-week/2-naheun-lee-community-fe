@@ -1,6 +1,6 @@
 import { getProfileInfo } from "../api/info.js";
 import { updateProfile, deleteUser } from "../api/userService.js"; 
-import { BASE_URL } from "../assets/config/config.js";
+import { BASE_URL } from "../config/config.js";
 import { CustomAlert } from "../assets/component/CustomAlert.js";
 
 

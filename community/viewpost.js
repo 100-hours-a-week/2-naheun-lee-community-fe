@@ -1,6 +1,6 @@
 import { getPostInfo } from "../api/info.js";
 import { addLike, removeLike, deletePost } from "../api/postService.js";
-import { BASE_URL } from "../assets/config/config.js";
+import { BASE_URL } from "../config/config.js";
 import { Comments } from "../assets/component/comments.js"; 
 import { CustomAlert } from "../assets/component/CustomAlert.js";
 

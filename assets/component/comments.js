@@ -1,7 +1,7 @@
 import { getPostInfo } from "../../api/info.js";
 import { addAPIComment, editAPIComment, deleteAPIComment } from "../../api/postService.js";
-import { BASE_URL } from "../config/config.js";
-import { CustomAlert } from "./CustomAlert.js";
+import { BASE_URL } from "../../config/config.js";
+import { CustomAlert } from "./CustomAlert.js"; 
 
 export function Comments(postData, postId, renderPost) {
     const commentList = document.getElementById("comments-list");

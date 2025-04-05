@@ -1,6 +1,6 @@
 import { getPostsInfo } from "../api/info.js"; 
 import { increaseViewCount } from "../api/postService.js"
-import { BASE_URL } from "../assets/config/config.js";
+import { BASE_URL } from "../config/config.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
     const postList = document.getElementById("post-list");

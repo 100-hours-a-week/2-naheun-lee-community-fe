@@ -1,5 +1,5 @@
 import { authFetch} from "./info.js";
-import { BASE_URL } from "../assets/config/config.js";
+import { BASE_URL } from "../config/config.js";
 
 // 로그인: (POST) /user/login
 export async function loginUser(email, password) {
@@ -22,7 +22,7 @@ export async function loginUser(email, password) {
             return { success: true };
         } else {
             if (result.message === "Invalid credentials") {
-                return { success: false, message: "이메일 또는 비밀번호가 잘못되었습니다." };
+                return { success: false, status: response.status };
             }
             return { success: false, message: result.message || "로그인 실패" };
         }

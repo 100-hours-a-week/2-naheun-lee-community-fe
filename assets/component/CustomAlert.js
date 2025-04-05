@@ -65,6 +65,7 @@ export class CustomAlert {
     message.style.cssText = `
       font-size: 18px;
       margin-bottom: 20px;
+      padding: 10px;
     `;
     this.messageEl = message;
 
