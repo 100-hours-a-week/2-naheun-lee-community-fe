@@ -6,8 +6,8 @@
 
 ## 기술 스택
 <div>
-<img src="https://github.com/yewon-Noh/readme-template/blob/main/skills/HTMLCSS.png?raw=true" width="80">
-<img src="https://github.com/yewon-Noh/readme-template/blob/main/skills/JavaScript.png?raw=true" width="80">
+<img src="https://github.com/yewon-Noh/readme-template/blob/main/skills/HTMLCSS.png?raw=true" width="60">
+<img src="https://github.com/yewon-Noh/readme-template/blob/main/skills/JavaScript.png?raw=true" width="60">
 </div>
 
 
@@ -94,34 +94,28 @@
 
 ## 화면 구성
 `홈`
-|로그인||회원가입|
-|:---:||:---:|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="300"/>|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="300"/>|
+
+|로그인|회원가입|
+|:---:|:---:|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="300"/>|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="300"/>|
 
 `게시글`
-|게시글 목록||게시글 등록||게시글 수정||게시글 삭제|
-|:---:||:---:||:---:||:---:|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
+
+|게시글 목록|게시글 등록|게시글 수정|게시글 삭제|
+|:---:|:---:|:---:|:---:|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
 
 `댓글`
-|댓글 목록||댓글 등록||댓글 수정||댓글 삭제|
-|:---:||:---:||:---:||:---:|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
+
+|댓글 목록|댓글 등록|댓글 수정|댓글 삭제|
+|:---:|:---:|:---:|:---:|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
 
 `계정 설정`
-|회원정보 수정||비밀번호 변경||로그아웃||회원탈퇴|
-|:---:||:---:||:---:||:---:|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
+
+|회원정보 수정|비밀번호 변경|로그아웃|회원탈퇴|
+|:---:|:---:|:---:|:---:|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
 
 
 
