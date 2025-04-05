@@ -81,8 +81,8 @@
 
 - 로그인
 - 회원가입
-- 게시판
-- 게시글 조회
+- 게시글 목록
+- 게시글 상세
     - 좋아요수, 조회수, 댓글 확인 가능
     - 댓글 등록/수정/삭제
 - 게시글 수정
@@ -93,16 +93,35 @@
 <br/> 
 
 ## 화면 구성
+`홈`
+|로그인||회원가입|
+|:---:||:---:|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="300"/>|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="300"/>|
 
-|로그인|
-|:---:|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="450"/>|
-|회원가입|
-|:---:|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="450"/>|
-|게시판|
-|:---:|
-|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="450"/>|
+`게시글`
+|게시글 목록||게시글 등록||게시글 수정||게시글 삭제|
+|:---:||:---:||:---:||:---:|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
+
+`댓글`
+|댓글 목록||댓글 등록||댓글 수정||댓글 삭제|
+|:---:||:---:||:---:||:---:|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
+
+`계정 설정`
+|회원정보 수정||비밀번호 변경||로그아웃||회원탈퇴|
+|:---:||:---:||:---:||:---:|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
+|<img src="https://github.com/user-attachments/assets/a1ad1f95-c54d-4c80-b292-0af379650c38" width="200"/>|
 
 
 
