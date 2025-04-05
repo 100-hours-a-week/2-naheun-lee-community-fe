@@ -1,6 +1,7 @@
 import { getPostInfo } from "../../api/info.js";
 import { addAPIComment, editAPIComment, deleteAPIComment } from "../../api/postService.js";
 import { BASE_URL } from "../config/config.js";
+import { CustomAlert } from "./CustomAlert.js";
 
 export function Comments(postData, postId, renderPost) {
     const commentList = document.getElementById("comments-list");
@@ -10,17 +11,22 @@ export function Comments(postData, postId, renderPost) {
     const cancelButton2 = document.getElementById("cancel-btn2");
     const confirmButton2 = document.getElementById("confirm-btn2");
 
+    const alertBox = new CustomAlert();
+
     let isEditing = false;
     let editingCommentId = null;
     let selectedCommentId = null;
 
     function renderComments() {
         commentList.innerHTML = "";
+        const currentUserId = Number(localStorage.getItem("userId")); 
+
         if (postData.comments && postData.commentsCount > 0) {
             for (const comment of postData.comments) {
                 const isActiveUser = comment.user.active;
                 const commentImgUrl = isActiveUser ? `${BASE_URL}${comment.user.profileImgUrl}` : `${BASE_URL}/profileuploads/default-profile.png`;
                 const nickname = isActiveUser ? comment.user.nickname : "(알 수 없음)";
+                const isAuthor = comment.user.userId === currentUserId;
                 const commentItem = document.createElement("div");
                 commentItem.classList.add("comment-item");
                 commentItem.setAttribute("data-commentId", comment.commentId);
@@ -32,8 +38,10 @@ export function Comments(postData, postId, renderPost) {
                             <span class="date">${comment.createdAt}</span>
                         </div>
                         <div class="btn-group">
-                            <button class="edit-btn">수정</button>
-                            <button class="delete-btn">삭제</button>
+                             ${isAuthor
+                            ? `<button class="edit-btn">수정</button>
+                               <button class="delete-btn">삭제</button>`
+                            : ""}
                         </div>
                     </div>
                     <div class="comment-content">${comment.content}</div>
@@ -51,6 +59,7 @@ export function Comments(postData, postId, renderPost) {
         commentBtn.disabled = true;
     }
 
+    // 댓글 등록
     async function addComment() {
         const text = commentTextArea.value.trim();
         if (text === "") return;
@@ -59,16 +68,22 @@ export function Comments(postData, postId, renderPost) {
         if (result.success) {
             const updatedResult = await getPostInfo(Number(postId));
             if (updatedResult.success) {
-                postData = updatedResult.data;
-                renderPost();
-                renderComments();
-                resetCommentState();
+                alertBox.show("댓글이 등록되었습니다.", () => {
+                    postData = updatedResult.data;
+                    renderPost();
+                    renderComments();
+                    resetCommentState();
+                });
+            }
+            else {
+                console.log(updatedResult.message);
             }
         } else {
             console.log(result.message);
         }
     }
 
+    // 댓글 수정
     async function updateComment() {
         const newText = commentTextArea.value.trim();
         if (newText === "" || editingCommentId === null) return;
@@ -77,25 +92,36 @@ export function Comments(postData, postId, renderPost) {
         if (result.success) {
             const updatedResult = await getPostInfo(Number(postId));
             if (updatedResult.success) {
-                postData = updatedResult.data;
-                renderPost();
-                renderComments();
-                resetCommentState();
+                alertBox.show("댓글이 수정되었습니다.", () => {
+                    postData = updatedResult.data;
+                    renderPost();
+                    renderComments();
+                    resetCommentState();
+                });
+            }
+            else {
+                console.log(updatedResult.message);
             }
         } else {
             console.log(result.message);
         }
     }
 
+    // 댓글 삭제
     async function deleteComment() {
         const result = await deleteAPIComment(Number(postId), selectedCommentId);
         if (result.success) {
             const updatedResult = await getPostInfo(Number(postId));
             if (updatedResult.success) {
-                postData = updatedResult.data;
-                renderPost();
-                renderComments();
                 deleteModal2.style.display = "none";
+                alertBox.show("댓글이 삭제되었습니다.", () => {
+                    postData = updatedResult.data;
+                    renderPost();
+                    renderComments();
+                });
+            }
+            else {
+                console.log(updatedResult.message);
             }
         } else {
             console.log(result.message);

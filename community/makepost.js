@@ -48,13 +48,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const title = titleInput.value.trim();
         const content = contentInput.value.trim();
         const file = fileInput.files[0]; 
-
       
         const result = await createPost(title, content, file);
-
         if (result.success) {
-            alertBox.show("게시글이 등록되었습니다.");
-            window.location.href = "posts.html"; 
+            alertBox.show("게시글이 등록되었습니다.", () => {
+                window.location.href = `posts.html`;
+            });
         } else {
             console.log(result.message); 
         }

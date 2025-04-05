@@ -17,7 +17,7 @@ export class HeaderComponent extends HTMLElement {
                         </button>
                     ` : `<div class="header-placeholder"></div>`}
                     
-                    <h1 class="header-title" id="header-title">아무 말 대잔치</h1>
+                    <h1 class="header-title" id="header-title">Today's Log</h1>
 
                     ${showProfile ? `
                         <div class="header-profile-container">

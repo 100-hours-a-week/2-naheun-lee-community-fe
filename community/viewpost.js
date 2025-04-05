@@ -2,6 +2,7 @@ import { getPostInfo } from "../api/info.js";
 import { addLike, removeLike, deletePost } from "../api/postService.js";
 import { BASE_URL } from "../assets/config/config.js";
 import { Comments } from "../assets/component/comments.js"; 
+import { CustomAlert } from "../assets/component/CustomAlert.js";
 
 document.addEventListener("DOMContentLoaded", async function () {
     const editBtn =  document.getElementById("editbtn");
@@ -10,6 +11,8 @@ document.addEventListener("DOMContentLoaded", async function () {
     const confirmButton = document.getElementById("confirm-btn");
     const cancelButton = document.getElementById("cancel-btn");
     const likeBtn = document.getElementById("like-btn");
+
+    const alertBox = new CustomAlert();
 
     const params = new URLSearchParams(window.location.search);
     const postId = params.get("postId");
@@ -116,9 +119,10 @@ document.addEventListener("DOMContentLoaded", async function () {
     confirmButton.addEventListener('click', async function () {
         const result = await deletePost(Number(postId));
         if (result.success) {
-            alert("게시글이 삭제되었습니다.");
             deleteModal.style.display = "none";
-            window.location.href = "posts.html";
+            alertBox.show("게시글이 삭제되었습니다.", () => {
+                window.location.href = `posts.html`;
+            });
         } else {
             console.log(result.message);
         }

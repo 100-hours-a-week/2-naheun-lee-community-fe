@@ -1,4 +1,5 @@
 import { signupUser } from "../api/userService.js";
+import { CustomAlert } from "../assets/component/CustomAlert.js";
 
 document.addEventListener("DOMContentLoaded", function () {
     const profilePicInput = document.getElementById("profile-pic");
@@ -9,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const nicknameInput = document.getElementById("nickname");
     const signupBtn = document.getElementById("signup-btn");
     const plusIcon = document.getElementById("plus-icon");
+
+    const alertBox = new CustomAlert();
 
     function showError(id, message) {
         const element = document.getElementById(id);
@@ -30,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 profilePreview.style.display = "block"; 
                 plusIcon.style.display = "none";
                 hideError("profile-helper");
+                validateForm(); 
             };
             reader.readAsDataURL(file);
         }
@@ -37,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
             profilePreview.style.display = "none";
             plusIcon.style.display = "block";
             showError("profile-helper", "프로필 사진을 추가해주세요.");
+            validateForm(); 
         }
     });
 
@@ -120,9 +125,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const file = profilePicInput.files[0];  
 
             const result = await signupUser(email, password, nickname, file);
-            
             if (result.success) {
-                window.location.href = "login.html";
+                alertBox.show("회원가입이 완료되었습니다.", () => {
+                    window.location.href = "login.html";
+                });
             } else {
                 console.log(result.message);
             }

@@ -66,6 +66,7 @@ export class CustomAlert {
       font-size: 18px;
       margin-bottom: 20px;
     `;
+    this.messageEl = message;
 
     const btn = document.createElement("button");
     btn.textContent = "확인";
@@ -92,7 +93,7 @@ export class CustomAlert {
   }
 
   show(message, onConfirm = null) {
-    document.getElementById("alert-message").textContent = message;
+    this.messageEl.textContent = message;
     this.alertEl.style.display = "flex";
     this.onConfirm = onConfirm; 
   }

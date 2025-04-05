@@ -36,7 +36,7 @@ export async function authFetch(url, options = {}) {
     } catch (error) {
       console.error("네트워크 오류:", error);
     }
-  }
+}
 
 // 사용자 정보 가져오기: (GET) /user
 export async function getProfileInfo() {
