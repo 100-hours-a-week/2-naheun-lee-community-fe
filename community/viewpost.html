@@ -10,6 +10,26 @@
 </head>
 <body>
     <header-component back profile back-path="posts.html"></header-component>
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <p class="modal-title">게시글을 삭제하시겠습니까?</p>
+            <p>삭제한 내용은 복구할 수 없습니다.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn" id="cancel-btn">취소</button>
+                <button class="modal-btn" id="confirm-btn">확인</button>
+            </div>
+        </div>
+    </div>
+    <div id="delete-modal2" class="modal">
+        <div class="modal-content">
+            <p class="modal-title">댓글을 삭제하시겠습니까?</p>
+            <p>삭제한 내용은 복구할 수 없습니다.</p>
+            <div class="modal-buttons">
+                <button class="modal-btn" id="cancel-btn2">취소</button>
+                <button class="modal-btn" id="confirm-btn2">확인</button>
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="scroll-fullarea">
             <div class="posts-wrapper">
@@ -24,17 +44,6 @@
                         <div class="btn-group">
                             <button class="edit-btn" id="editbtn">수정</button>
                             <button class="delete-btn" id="deletebtn">삭제</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="delete-modal" class="modal">
-                    <div class="modal-content">
-                        <p class="modal-title">게시글을 삭제하시겠습니까?</p>
-                        <p>삭제한 내용은 복구할 수 없습니다.</p>
-                        <div class="modal-buttons">
-                            <button class="modal-btn" id="cancel-btn">취소</button>
-                            <button class="modal-btn" id="confirm-btn">확인</button>
                         </div>
                     </div>
                 </div>
@@ -71,24 +80,13 @@
                 </div>
                 <div id="comments-list">
                 </div>
-
-                <div id="delete-modal2" class="modal">
-                    <div class="modal-content">
-                        <p class="modal-title">댓글을 삭제하시겠습니까?</p>
-                        <p>삭제한 내용은 복구할 수 없습니다.</p>
-                        <div class="modal-buttons">
-                            <button class="modal-btn" id="cancel-btn2">취소</button>
-                            <button class="modal-btn" id="confirm-btn2">확인</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="bottom-space"></div>
-            </div>
         </div>
     </div>
     <script type="module" src="../assets/component/comments.js"></script>
     <script type="module" src="../assets/component/Header.js"></script>
     <script type="module" src="viewpost.js"></script>
 </body>
+
+<div class="bottom-space"></div>
+</div>
 </html>

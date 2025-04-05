@@ -10,7 +10,7 @@ export class DropdownMenu {
     async render() {
         const result = await getProfileInfo();
         if (!result.success) {
-            alert(result.message);
+            console.log(result.message);
             return;
         }
 
